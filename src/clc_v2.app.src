@@ -1,0 +1,12 @@
+{application, clc_v2,
+ [
+  {description, ""},
+  {vsn, "1"},
+  {registered, []},
+  {applications, [
+                  kernel,
+                  stdlib
+                 ]},
+  {mod, { clc_v2_app, []}},
+  {env, []}
+ ]}.
