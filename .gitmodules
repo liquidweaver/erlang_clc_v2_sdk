@@ -1,0 +1,6 @@
+[submodule "rebar"]
+	path = rebar
+	url = https://github.com/rebar/rebar.git
+[submodule "kerl"]
+	path = kerl
+	url = https://github.com/yrashk/kerl.git
