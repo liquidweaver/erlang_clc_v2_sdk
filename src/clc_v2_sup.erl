@@ -23,5 +23,6 @@ start_link() ->
 %% ===================================================================
 
 init([]) ->
-    {ok, { {one_for_one, 5, 10}, []} }.
+  AuthSup = #{id => clc_v2_auth_sup, start => {clc_v2_auth_sup, start_link, []}, type => supervisor},
+  {ok, { #{}, [AuthSup]} }.
 
