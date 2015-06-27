@@ -17,7 +17,7 @@ start: compile
 tests: rebar
 	$(REBAR) skip_deps=true eunit
 
-deps: rebar rebar.config.lock ${ERL_INSTALL}/activate
+deps: rebar rebar.config.lock
 	$(REBAR) -C rebar.config.lock get-deps
 	$(REBAR) -C rebar.config.lock compile
 
@@ -29,6 +29,7 @@ rebar.config.lock:
 rebar: $(REBAR)
 profile:
 	echo ${BASH_PROFILE}
+erlang: ${ERL_INSTALL}/activate
 
 $(KERL):
 		git submodule update --init --recursive
@@ -38,6 +39,7 @@ $(REBAR):
 		@cd rebar && ./bootstrap
 
 ${ERL_INSTALL}/activate: $(KERL)
+	$(KERL) update releases
 	-$(KERL) build $(ERL_VERSION) $(ERL_VERSION)
 	$(KERL) install $(ERL_VERSION) ${HOME}/erlangs/$(ERL_VERSION)
 	fgrep -q ${ERL_ACTIVATE} ${BASH_PROFILE} || echo ${ERL_ACTIVATE} >> ${BASH_PROFILE}

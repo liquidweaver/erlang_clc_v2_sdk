@@ -1,0 +1,6 @@
+script:
+- make erlang
+- source ~/erlangs/18.0/activate
+- make rebar
+- make deps
+- make tests
