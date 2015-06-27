@@ -1,8 +1,9 @@
 .PHONY: all compile clean start tests deps erlang rebar profile
 REBAR=rebar/rebar
 KERL=kerl/kerl
-ERL_VERSION=17.4
+ERL_VERSION=18.0
 ERL_INSTALL=${HOME}/erlangs/${ERL_VERSION}
+ERL_ACTIVATE="source ${ERL_INSTALL}/activate"
 BASH_PROFILE=$(if ifeq($(findstring, "darwin", ${OSTYPE}), "darwin"), ${HOME}/.bash_profile, ${HOME}/.bashrc )
 HOST=$(shell hostname)
 
@@ -16,7 +17,7 @@ start: compile
 tests: rebar
 	$(REBAR) skip_deps=true eunit
 
-deps: rebar rebar.config.lock
+deps: rebar rebar.config.lock ${ERL_INSTALL}/activate
 	$(REBAR) -C rebar.config.lock get-deps
 	$(REBAR) -C rebar.config.lock compile
 
