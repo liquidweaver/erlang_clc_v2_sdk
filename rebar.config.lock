@@ -16,6 +16,9 @@
        {gun,".*",
             {git,"git@github.com:ninenines/gun.git",
                  "427230d6f94f5b8a396fd504a73d73d1d65ab0a7"}},
+       {jiffy,".*",
+              {git,"git@github.com:davisp/jiffy.git",
+                   "446e284bd51013fe2899803b9dcbd162d8b8efb3"}},
        {meck,".*",
              {git,"git@github.com:eproxus/meck",
                   "dde759050eff19a1a80fd854d7375174b191665d"}}]}.
