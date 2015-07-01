@@ -8,5 +8,5 @@
                   stdlib
                  ]},
   {mod, { clc_v2_app, []}},
-  {env, []}
+  {env, [{api_base, "https://api.ctl.io/v2/"}]}
  ]}.
