@@ -48,6 +48,7 @@ maybe_call_function(F, A) ->
 -define( history(Module), ?debugFmt( "History for module ~p:~p~n", [Module, meck:history(Module)] ) ).
 
 -define( stub(M,F,A, ReturnValue), meck:expect( M, F, A, ReturnValue ) ).
+-define( stub(M,F,Fun), meck:expect( M, F, Fun ) ).
 -define( seq(S), meck:seq(S) ).
 
 -define( called( M, F, A), ?assert( meck:called( M, F, A ) ) ).
