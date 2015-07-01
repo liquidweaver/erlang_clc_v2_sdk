@@ -1,6 +1,6 @@
 {application, clc_v2,
  [
-  {description, ""},
+  {description, "CenturyLink Cloud V2 API SDK"},
   {vsn, git},
   {registered, []},
   {applications, [
