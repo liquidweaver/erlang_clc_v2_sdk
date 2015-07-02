@@ -15,7 +15,7 @@ login_wraps_username_and_password_in_json_body() ->
 
   ?called( clc_v2_http_client, post, [?any, #{username => username1, password => password1}]).
 
-account_alias_acts_as_a_lens_to_user_info() ->
+account_alias_acts_as_a_lens_into_user_info() ->
   UserInfoMap = #{<<"accountAlias">> => <<"ALIAS">>,
                   <<"bearerToken">> => <<"[LONG TOKEN VALUE]">>,
                   <<"locationAlias">> => <<"DC1">>,
@@ -23,3 +23,12 @@ account_alias_acts_as_a_lens_to_user_info() ->
                   <<"userName">> => <<"user@email.com">>},
 
   ?assertEqual( "ALIAS", clc_v2_authentication:account_alias(UserInfoMap) ).
+
+bearer_token_acts_as_a_lens_into_user_info() ->
+  UserInfoMap = #{<<"accountAlias">> => <<"ALIAS">>,
+                  <<"bearerToken">> => <<"[LONG TOKEN VALUE]">>,
+                  <<"locationAlias">> => <<"DC1">>,
+                  <<"roles">> => [<<"AccountAdmin">>,<<"ServerAdmin">>],
+                  <<"userName">> => <<"user@email.com">>},
+
+  ?assertEqual( "[LONG TOKEN VALUE]", clc_v2_authentication:bearer_token(UserInfoMap) ).

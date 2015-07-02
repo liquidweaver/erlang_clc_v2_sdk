@@ -10,7 +10,7 @@
 -spec get( AuthRef::clc_v2_auth:auth_ref(), Route::[string() | route_token()] ) -> map().
 get( AuthRef, Route ) ->
   UserInfo = clc_v2_auth:user_info( AuthRef ),
-  BearerToken = clc_v2_authorization:bearer_token( UserInfo ),
+  BearerToken = clc_v2_authentication:bearer_token( UserInfo ),
   Headers = [{"Authorization", "Bearer " ++ BearerToken}],
   Url = build_url(UserInfo, Route, api_base()),
   send_req( Url, Headers, get, []).
