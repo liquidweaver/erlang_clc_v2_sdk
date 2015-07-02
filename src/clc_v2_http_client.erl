@@ -27,7 +27,7 @@ send_req( Url, Headers, Method, Body ) ->
 build_url(UserInfo, [H | Tail], Acc) when is_list(H)->
   build_url(UserInfo, Tail, Acc ++ "/" ++ H);
 build_url(UserInfo, [H | Tail], Acc) when is_atom(H)->
-  build_url(UserInfo, Tail, Acc ++ "/" ++ clc_v2_authorization:H(UserInfo));
+  build_url(UserInfo, Tail, Acc ++ "/" ++ clc_v2_authentication:H(UserInfo));
 build_url(_UserInfo, [], Acc) ->
   Acc.
 
