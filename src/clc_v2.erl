@@ -4,9 +4,10 @@
   datacenters/1
   ] ).
 
--spec login( Username::binary(), Password::binary ) -> clc_v2_auth:auth_ref().
+-spec login( Username::binary(), Password::binary() ) -> clc_v2_auth:auth_ref().
 login( Username, Password ) ->
-  clc_v2_auth_sup:create_worker( Username, Password ).
+  { ok, AuthRef } = clc_v2_auth_sup:create_worker( Username, Password ),
+  AuthRef.
 
 -spec datacenters(Ref::clc_v2_auth:auth_ref()) -> map().
 datacenters(Ref) ->

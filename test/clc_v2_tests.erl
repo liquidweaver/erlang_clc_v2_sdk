@@ -13,6 +13,6 @@ login_creates_new_auth_worker_under_auth_supervisor() ->
   ?meck( clc_v2_auth_sup, [non_strict] ),
   ?stub( clc_v2_auth_sup, create_worker, 2, {ok, authref1}),
 
-  ?assertEqual( {ok, authref1 }, clc_v2:login( username1, password1 ) ),
+  ?assertEqual( authref1, clc_v2:login( username1, password1 ) ),
 
   ?called( clc_v2_auth_sup, create_worker, [username1, password1] ).

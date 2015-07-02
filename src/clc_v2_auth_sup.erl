@@ -18,6 +18,7 @@
 start_link() ->
   supervisor:start_link({local, ?MODULE}, ?MODULE, []).
 
+-spec create_worker( Username::binary(), Password::binary() ) -> { ok, clc_v2_auth:auth_ref() }.
 create_worker(Username, Password) ->
   supervisor:start_child(?MODULE, [Username, Password]).
 
