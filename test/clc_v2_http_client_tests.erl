@@ -35,7 +35,7 @@ get_appends_multiple_route_directories_to_api_base() ->
 
   ?called( ibrowse, send_req, ["http://api.base/route1/route2/route3", ?any, get, []] ).
 
-get_appends_calls_authentication_lens_to_resolve_atom_route_directories() ->
+get_calls_authentication_lens_to_resolve_atom_route_directories() ->
   clc_v2_http_client:get( auth_ref1, ["route1", route_lens, "route3"] ),
 
   ?called( clc_v2_authentication, route_lens, [user_info1] ),

@@ -4,17 +4,18 @@
 {eunit_opts,[verbose,{report,{eunit_surefire,[{dir,"."}]}}]}.
 {ct_dir,"uats"}.
 {ct_log_dir,"uats/logs"}.
+{pre_hooks,[{ct,"find ./rebar -name '*.test.spec' -delete"}]}.
 {plugins,[rebar_lock_deps_plugin]}.
 {deps,[{rebar_lock_deps_plugin,".*",
-                               {git,"git@github.com:seth/rebar_lock_deps_plugin.git",
+                               {git,"git://github.com/seth/rebar_lock_deps_plugin.git",
                                     "7a5835029c42b8138325405237ea7e8516a84800"}},
        {ibrowse,".*",
                 {git,"git://github.com/cmullaparthi/ibrowse.git",
                      "58007c74336a02aa51c4527b32e3a17aca366fa2"}},
        {jiffy,".*",
-              {git,"git@github.com:davisp/jiffy.git",
+              {git,"git://github.com/davisp/jiffy.git",
                    "446e284bd51013fe2899803b9dcbd162d8b8efb3"}},
        {meck,".*",
-             {git,"git@github.com:eproxus/meck",
+             {git,"git://github.com/eproxus/meck",
                   "dde759050eff19a1a80fd854d7375174b191665d"}}]}.
 
