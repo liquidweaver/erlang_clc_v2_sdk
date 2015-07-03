@@ -45,7 +45,7 @@ get_decodes_response_body() ->
   ResponseBody = <<"{\"key1\":\"value1\"}">>,
   ?stub( ibrowse, send_req, 4, {ok, 200, [], ResponseBody }),
 
-  ?assertMatch(#{ <<"key1">> := <<"value1">> }, clc_v2_http_client:get( auth_ref1, ["route1"])).
+  ?assertMatch({ ok, #{ <<"key1">> := <<"value1">> }}, clc_v2_http_client:get( auth_ref1, ["route1"])).
 
 post_appends_multiple_route_directories_to_api_base_and_posts() ->
   clc_v2_http_client:post(  ["route1", "route2"], #{ key1 => "value1", key2 => "value2" }),
@@ -62,4 +62,4 @@ post_decodes_response_body() ->
   ResponseBody = <<"{\"key1\":\"value1\"}">>,
   ?stub( ibrowse, send_req, 4, {ok, 200, [], ResponseBody }),
 
-  ?assertMatch(#{ <<"key1">> := <<"value1">> }, clc_v2_http_client:post( ["route1"], #{})).
+  ?assertMatch({ok, #{ <<"key1">> := <<"value1">> }}, clc_v2_http_client:post( ["route1"], #{})).
