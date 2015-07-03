@@ -5,7 +5,9 @@
   {registered, []},
   {applications, [
                   kernel,
-                  stdlib
+                  stdlib,
+                  ibrowse,
+                  ssl
                  ]},
   {mod, { clc_v2_app, []}},
   {env, [{api_base, "https://api.ctl.io/v2/"}]}
