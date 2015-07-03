@@ -6,7 +6,7 @@
 -export([
   start_link/2,
   user_info/1
-]).
+  ]).
 
 %% gen_server callbacks
 -export([init/1,
@@ -25,7 +25,7 @@
 %%%===================================================================
 
 start_link(Username, Password) ->
-    gen_server:start_link(?MODULE, [Username, Password], []).
+  gen_server:start_link(?MODULE, [Username, Password], []).
 
 -spec user_info( ApiRef::auth_ref() ) -> user_info().
 user_info(ApiRef) ->
@@ -36,26 +36,26 @@ user_info(ApiRef) ->
 %%%===================================================================
 
 init([Username, Password]) ->
-    {ok, { Username, Password, unset }}.
+  {ok, { Username, Password, unset }}.
 
 handle_call(user_info, _From, { Username, Password, unset }) ->
   { ok, UserInfo } = clc_v2_authentication:login( Username, Password ),
   {reply, UserInfo, { Username, Password, UserInfo }};
 handle_call(_Request, _From, State) ->
-    Reply = ok,
-    {reply, Reply, State}.
+  Reply = ok,
+  {reply, Reply, State}.
 
 handle_cast(_Msg, State) ->
-    {noreply, State}.
+  {noreply, State}.
 
 handle_info(_Info, State) ->
-    {noreply, State}.
+  {noreply, State}.
 
 terminate(_Reason, _State) ->
-    ok.
+  ok.
 
 code_change(_OldVsn, State, _Extra) ->
-    {ok, State}.
+  {ok, State}.
 
 %%%===================================================================
 %%% Internal functions
