@@ -1,4 +1,4 @@
-.PHONY: all compile clean start tests deps erlang rebar profile
+.PHONY: all compile clean start tests uats deps erlang rebar profile
 REBAR=rebar/rebar
 KERL=kerl/kerl
 ERL_VERSION=18.0
@@ -16,6 +16,8 @@ start: compile
 	erl -pa ebin deps/*/ebin -eval "application:ensure_all_started(clc_v2, permanent)."
 tests: rebar
 	$(REBAR) skip_deps=true eunit
+uats: rebar
+	$(REBAR) skip_deps=true ct
 
 deps: rebar rebar.config.lock
 	$(REBAR) -C rebar.config.lock get-deps

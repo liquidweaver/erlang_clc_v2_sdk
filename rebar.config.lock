@@ -2,6 +2,9 @@
 
 {sub_dirs,["rel"]}.
 {eunit_opts,[verbose,{report,{eunit_surefire,[{dir,"."}]}}]}.
+{ct_dir,"uats"}.
+{ct_log_dir,"uats/logs"}.
+{pre_hooks,[{ct,"find ./rebar -name '*.test.spec' -delete"}]}.
 {plugins,[rebar_lock_deps_plugin]}.
 {deps,[{rebar_lock_deps_plugin,".*",
                                {git,"git://github.com/seth/rebar_lock_deps_plugin.git",

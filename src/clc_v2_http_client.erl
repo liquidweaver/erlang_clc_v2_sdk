@@ -7,7 +7,7 @@
 
 -type route_token() :: account_alias.
 
--spec get( AuthRef::clc_v2_auth:auth_ref(), Route::[string() | route_token()] ) -> map().
+-spec get( AuthRef::clc_v2_auth:auth_ref(), Route::[string() | route_token()] ) -> { ok, map() } | { error, term() }.
 get( AuthRef, Route ) ->
   UserInfo = clc_v2_auth:user_info( AuthRef ),
   BearerToken = clc_v2_authentication:bearer_token( UserInfo ),
@@ -15,14 +15,14 @@ get( AuthRef, Route ) ->
   Url = build_url(UserInfo, Route, api_base()),
   send_req( Url, Headers, get, []).
 
--spec post( Route::[string() | route_token()], Body::string() | binary() ) -> map().
+-spec post( Route::[string() | route_token()], Body::string() | binary() ) -> { ok, map() } | { error, term() }.
 post( Route, Body ) ->
   Url = build_url(#{}, Route, api_base()),
-  send_req( Url, [], post, jiffy:encode(Body)).
+  send_req( Url, [{"Content-Type","application/json"}], post, jiffy:encode(Body)).
 
 send_req( Url, Headers, Method, Body ) ->
-  {ok, 200, _, ResponseBody} = ibrowse:send_req( Url, Headers, Method, Body ),
-  jiffy:decode( ResponseBody, [return_maps] ).
+  {ok, "200", _, ResponseBody} = ibrowse:send_req( Url, Headers, Method, Body ),
+  {ok, jiffy:decode( ResponseBody, [return_maps] )}.
 
 build_url(UserInfo, [H | Tail], Acc) when is_list(H)->
   build_url(UserInfo, Tail, Acc ++ "/" ++ H);

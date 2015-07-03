@@ -15,6 +15,9 @@ login_wraps_username_and_password_in_json_body() ->
 
   ?called( clc_v2_http_client, post, [?any, #{username => username1, password => password1}]).
 
+login_returns_result_of_clc_v2_authentication_login() ->
+  ?assertEqual( user_info1, clc_v2_authentication:login( username1, password1 )).
+
 account_alias_acts_as_a_lens_into_user_info() ->
   UserInfoMap = #{<<"accountAlias">> => <<"ALIAS">>,
                   <<"bearerToken">> => <<"[LONG TOKEN VALUE]">>,
