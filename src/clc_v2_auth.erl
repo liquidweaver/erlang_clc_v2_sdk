@@ -40,7 +40,9 @@ init([Username, Password]) ->
 
 handle_call(user_info, _From, { Username, Password, unset }) ->
   { ok, UserInfo } = clc_v2_authentication:login( Username, Password ),
-  {reply, UserInfo, { Username, Password, UserInfo }};
+  { reply, UserInfo, { Username, Password, UserInfo }};
+handle_call(user_info, _From, State = { _Username, _Password, UserInfo }) ->
+  { reply, UserInfo, State };
 handle_call(_Request, _From, State) ->
   Reply = ok,
   {reply, Reply, State}.
