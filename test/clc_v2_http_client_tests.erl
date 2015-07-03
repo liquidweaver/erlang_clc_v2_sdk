@@ -58,6 +58,12 @@ post_encodes_body_as_json() ->
 
   ?called( ibrowse, send_req, [?any, ?any, ?any, ExpectedJson] ).
 
+post_sends_content_type_header() ->
+  clc_v2_http_client:post(  ["route1"], #{ key1 => <<"value1">>, key2 => <<"value2">> }),
+
+  Headers = ?capture( ibrowse, send_req, 4, 2),
+  ?assert(lists:member( {"Content-Type", "application/json"}, Headers )).
+
 post_decodes_response_body() ->
   ResponseBody = <<"{\"key1\":\"value1\"}">>,
   ?stub( ibrowse, send_req, 4, {ok, "200", [], ResponseBody }),

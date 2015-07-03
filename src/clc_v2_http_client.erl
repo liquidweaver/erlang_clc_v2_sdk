@@ -18,7 +18,7 @@ get( AuthRef, Route ) ->
 -spec post( Route::[string() | route_token()], Body::string() | binary() ) -> { ok, map() } | { error, term() }.
 post( Route, Body ) ->
   Url = build_url(#{}, Route, api_base()),
-  send_req( Url, [], post, jiffy:encode(Body)).
+  send_req( Url, [{"Content-Type","application/json"}], post, jiffy:encode(Body)).
 
 send_req( Url, Headers, Method, Body ) ->
   {ok, "200", _, ResponseBody} = ibrowse:send_req( Url, Headers, Method, Body ),
