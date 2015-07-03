@@ -21,7 +21,7 @@ post( Route, Body ) ->
   send_req( Url, [], post, jiffy:encode(Body)).
 
 send_req( Url, Headers, Method, Body ) ->
-  {ok, 200, _, ResponseBody} = ibrowse:send_req( Url, Headers, Method, Body ),
+  {ok, "200", _, ResponseBody} = ibrowse:send_req( Url, Headers, Method, Body ),
   {ok, jiffy:decode( ResponseBody, [return_maps] )}.
 
 build_url(UserInfo, [H | Tail], Acc) when is_list(H)->

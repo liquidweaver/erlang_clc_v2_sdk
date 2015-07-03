@@ -7,7 +7,7 @@ setup() ->
   ?stub( clc_v2_auth, user_info, 1, user_info1 ),
   ?stub( clc_v2_authentication, bearer_token, 1, "LONG_BEARER_TOKEN" ),
   ?stub( clc_v2_authentication, route_lens, 1, "lens_result1" ),
-  ?stub( ibrowse, send_req, 4, {ok, 200, [], <<"{}">>} ),
+  ?stub( ibrowse, send_req, 4, {ok, "200", [], <<"{}">>} ),
   ?stub( application, get_env, fun( clc_v2, api_base ) -> {ok, "http://api.base"};
                                   ( _, _ ) -> {error, doing_it_wrong}
                                end).
@@ -43,7 +43,7 @@ get_calls_authentication_lens_to_resolve_atom_route_directories() ->
 
 get_decodes_response_body() ->
   ResponseBody = <<"{\"key1\":\"value1\"}">>,
-  ?stub( ibrowse, send_req, 4, {ok, 200, [], ResponseBody }),
+  ?stub( ibrowse, send_req, 4, {ok, "200", [], ResponseBody }),
 
   ?assertMatch({ ok, #{ <<"key1">> := <<"value1">> }}, clc_v2_http_client:get( auth_ref1, ["route1"])).
 
@@ -60,6 +60,6 @@ post_encodes_body_as_json() ->
 
 post_decodes_response_body() ->
   ResponseBody = <<"{\"key1\":\"value1\"}">>,
-  ?stub( ibrowse, send_req, 4, {ok, 200, [], ResponseBody }),
+  ?stub( ibrowse, send_req, 4, {ok, "200", [], ResponseBody }),
 
   ?assertMatch({ok, #{ <<"key1">> := <<"value1">> }}, clc_v2_http_client:post( ["route1"], #{})).
