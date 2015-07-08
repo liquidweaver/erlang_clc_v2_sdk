@@ -1,0 +1,2 @@
+-define( V2_API_USERNAME, "UNSET" ).
+-define( V2_API_PASSWORD, "UNSET" ).

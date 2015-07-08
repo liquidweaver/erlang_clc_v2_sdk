@@ -1,6 +1,14 @@
 -module( clc_v2_tests ).
 -include( "test_fixture.hrl" ).
 
+clc_v2_datacenter_capabilites_delegates_to_datacenters_capabilities() ->
+  ?meck(clc_v2_datacenters, [non_strict]),
+  ?stub(clc_v2_datacenters, capabilities, 2, datacenter1),
+
+  ?assertEqual(datacenter1, clc_v2:datacenter_capabilities(auth_ref1, datacenter_id1)),
+
+  ?called(clc_v2_datacenters, capabilities, [auth_ref1, datacenter_id1]).
+
 clc_v2_datacenters_delgates_to_datacenters_get() ->
   ?meck(clc_v2_datacenters, [non_strict]),
   ?stub(clc_v2_datacenters, get, 1, datacenters1),
