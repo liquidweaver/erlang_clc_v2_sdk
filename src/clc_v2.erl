@@ -2,7 +2,8 @@
 -export( [
   login/2,
   datacenters/1,
-  datacenter/2
+  datacenter/2,
+  alert_policies/1
   ] ).
 
 -spec login( Username::binary(), Password::binary() ) -> clc_v2_auth:auth_ref().
@@ -17,3 +18,7 @@ datacenters(Ref) ->
 -spec datacenter(Ref::clc_v2_auth:auth_ref(), Datacenter::binary()) -> map().
 datacenter(Ref, Datacenter) ->
   clc_v2_datacenters:get(Ref, Datacenter).
+
+-spec alert_policies(Ref::clc_v2_auth:auth_ref()) -> map().
+alert_policies(Ref) ->
+   clc_v2_alert_policies:get(Ref).
