@@ -1,0 +1,14 @@
+{application, mock_clc,
+ [
+  {description, "Mock V2 API"},
+  {vsn, "0.0"},
+  {registered, []},
+  {applications, [
+                  cowboy,
+                  kernel,
+                  stdlib
+                 ]},
+  {mod, { mock_clc_app, []}},
+  {env, []},
+  {plugins, [rebar_lock_deps_plugin]}
+ ]}.

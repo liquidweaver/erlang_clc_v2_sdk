@@ -1,0 +1,18 @@
+%% THIS FILE IS GENERATED. DO NOT EDIT IT MANUALLY %%
+
+{sub_dirs,["rel"]}.
+{eunit_opts,[verbose,{report,{eunit_surefire,[{dir,"."}]}}]}.
+{plugins,[rebar_lock_deps_plugin]}.
+{deps,[{rebar_lock_deps_plugin,".*",
+                               {git,"git://github.com/seth/rebar_lock_deps_plugin.git",
+                                    "7a5835029c42b8138325405237ea7e8516a84800"}},
+       {cowlib,".*",
+               {git,"https://github.com/ninenines/cowlib.git",
+                    "d544a494af4dbc810fc9c15eaf5cc050cced1501"}},
+       {ranch,".*",
+              {git,"https://github.com/ninenines/ranch.git",
+                   "adf1822defc2b7cfdc7aca112adabfa1d614043c"}},
+       {cowboy,".*",
+               {git,"git@github.com:ninenines/cowboy.git",
+                    "b8e4115eb13488c517d8d8ef33c47d0eaa7838c6"}}]}.
+
