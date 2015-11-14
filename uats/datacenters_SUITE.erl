@@ -15,7 +15,7 @@ init_per_suite(Config) ->
   ?START_APP_AND_GET_AUTH_REF(Config).
 
 end_per_suite(_Config) ->
-  application:stop( clc_v2 ).
+  ?TEARDOWN().
 
 clc_v2_datacenters_returns_a_list_with_ca1_in_first_element(Config) ->
   AuthRef = proplists:get_value( auth_ref, Config ),
