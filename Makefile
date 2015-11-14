@@ -1,6 +1,7 @@
 .PHONY: all compile clean start tests uats deps erlang rebar profile
 REBAR=rebar/rebar
 KERL=kerl/kerl
+MOCK_DIR=uats/mock_clc
 ERL_VERSION=18.0
 ERL_INSTALL=${HOME}/erlangs/${ERL_VERSION}
 ERL_ACTIVATE="source ${ERL_INSTALL}/activate"
@@ -16,7 +17,7 @@ start: compile
 	erl -pa ebin deps/*/ebin -eval "application:ensure_all_started(clc_v2, permanent)."
 tests: rebar
 	$(REBAR) skip_deps=true eunit
-uats: rebar compile
+uats: rebar compile mock
 	$(REBAR) skip_deps=true ct
 
 deps: rebar rebar.config.lock
@@ -27,6 +28,17 @@ rebar.config.lock:
 	$(REBAR) get-deps
 	$(REBAR) compile
 	$(REBAR) lock-deps
+
+mock: mock.rebar.config.lock
+	cd $(MOCK_DIR) && \
+	../../$(REBAR) -C rebar.config.lock get-deps && \
+	../../$(REBAR) -C rebar.config.lock compile
+
+mock.rebar.config.lock:
+	cd $(MOCK_DIR) && \
+	../../$(REBAR) get-deps && \
+	../../$(REBAR) compile && \
+	../../$(REBAR) lock-deps
 
 rebar: $(REBAR)
 profile:
