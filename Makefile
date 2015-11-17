@@ -1,4 +1,4 @@
-.PHONY: all compile clean start tests uats deps erlang rebar profile
+.PHONY: all compile clean start tests uats deps mock erlang rebar profile
 REBAR=rebar/rebar
 KERL=kerl/kerl
 MOCK_DIR=uats/mock_clc

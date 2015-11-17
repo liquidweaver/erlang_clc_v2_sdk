@@ -14,5 +14,8 @@
                    "adf1822defc2b7cfdc7aca112adabfa1d614043c"}},
        {cowboy,".*",
                {git,"git@github.com:ninenines/cowboy.git",
-                    "b8e4115eb13488c517d8d8ef33c47d0eaa7838c6"}}]}.
+                    "b8e4115eb13488c517d8d8ef33c47d0eaa7838c6"}},
+       {jiffy,".*",
+              {git,"git@github.com:davisp/jiffy.git",
+                   "cfc61a2e952dc3182e0f9b1473467563699992e2"}}]}.
 

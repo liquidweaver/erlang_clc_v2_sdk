@@ -10,7 +10,13 @@
 %% ===================================================================
 
 start(_StartType, _StartArgs) ->
-    mock_clc_sup:start_link().
+  Dispatch = cowboy_router:compile(route_matchers()),
+  {ok, _} = cowboy:start_http(http, 100, [{port, 8000}], [{env, [{dispatch, Dispatch}]}]).
 
 stop(_State) ->
-    ok.
+  ok.
+
+route_matchers() ->
+  [ {'_',
+     [ { "/authentication/login", auth_handler, [] }]
+    } ].
