@@ -1,4 +1,4 @@
-.PHONY: all compile clean start tests uats deps mock erlang rebar profile
+.PHONY: all compile clean start tests uats deps mock_compile mock_deps erlang rebar profile
 REBAR=rebar/rebar
 KERL=kerl/kerl
 MOCK_DIR=uats/mock_clc
@@ -29,12 +29,11 @@ rebar.config.lock:
 	$(REBAR) compile
 	$(REBAR) lock-deps
 
-mock: mock.rebar.config.lock
+mock_compile: rebar
 	cd $(MOCK_DIR) && \
-	../../$(REBAR) -C rebar.config.lock get-deps && \
-	../../$(REBAR) -C rebar.config.lock compile
+	../../$(REBAR) skip_deps=true compile
 
-mock.rebar.config.lock:
+mock_deps: rebar
 	cd $(MOCK_DIR) && \
 	../../$(REBAR) get-deps && \
 	../../$(REBAR) compile && \
