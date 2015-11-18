@@ -1,3 +1,4 @@
+-include("data.hrl").
 -module(mock_clc_app).
 
 -behaviour(application).
@@ -10,6 +11,7 @@
 %% ===================================================================
 
 start(_StartType, _StartArgs) ->
+  gen_server:start(?DATASERVER, data_server, [], []),
   Dispatch = cowboy_router:compile(route_matchers()),
   {ok, _} = cowboy:start_http(http, 100, [{port, 8000}], [{env, [{dispatch, Dispatch}]}]).
 
@@ -18,5 +20,8 @@ stop(_State) ->
 
 route_matchers() ->
   [ {'_',
-     [ { "/authentication/login", auth_handler, [] }]
+     [
+      { "/v2/authentication/login", auth_handler, [] },
+      { "/v2/alertpolicies/:alias", alertpolicy_handler, [] }
+     ]
     } ].

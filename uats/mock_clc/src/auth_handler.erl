@@ -1,3 +1,4 @@
+-include("data.hrl").
 -module(auth_handler).
 -export([init/3, terminate/3, handle/2]).
 
@@ -25,7 +26,7 @@ handle_method(<<"POST">>, Req, State) ->
   {ok, Response, State}.
 
 authorize(#{ <<"UserName">> := <<"mock_user">>, <<"Password">> := <<"mock_password">> }) ->
-  {ok, #{ <<"accountAlias">> => <<"MOCK">>,
+  {ok, #{ <<"accountAlias">> => ?ALIAS,
           <<"locationAlias">> => <<"Region1">>,
           <<"userName">> => <<"mock_user.mock">>,
           <<"roles">> => [<<"AccountAdmin">>],
