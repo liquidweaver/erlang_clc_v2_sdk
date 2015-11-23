@@ -25,7 +25,7 @@ handle_method(<<"GET">>, Req, State) ->
   {ok, Response, State}.
 
 get_alert_policies(?ALIAS) ->
-  AlertPolicies = gen_server:call(?DATASERVER, alert_policies),
+  AlertPolicies = data_server:get(alert_policies),
   {ok,  AlertPolicies};
 get_alert_policies(_) ->
   {error, #{ <<"message">> => <<"You do not have permission to access this account.">> }}.

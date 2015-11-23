@@ -3,7 +3,9 @@
 
 -behaviour(gen_server).
 
--export([alert_policies/0]).
+-export([get/1,
+         put/2,
+         clear/0]).
 -export([init/1,
          handle_call/3,
          handle_cast/2,
@@ -12,14 +14,24 @@
          code_change/3]).
 
 init([]) ->
-  {ok, #{ alert_policies => []}}.
+  {ok, empty_state()}.
 
-alert_policies() ->
-  gen_server:call(?DATASERVER, alert_policies).
+get(Key) ->
+  gen_server:call(?DATASERVER, Key).
 
-handle_call(alert_policies, _From, State = #{ alert_policies := AlertPolicies }) ->
-  {reply, AlertPolicies, State}.
+put(Key, Value) ->
+  gen_server:cast(?DATASERVER, {put, Key, Value}).
 
+clear() ->
+  gen_server:call(?DATASERVER, clear).
+
+handle_call(Key, _From, State) ->
+  {reply, maps:get(Key, State), State}.
+
+handle_cast({put, Key, Value}, State) ->
+  {noreply, maps:put(Key, Value, State)};
+handle_cast(clear, _State) ->
+  {noreply, empty_state()};
 handle_cast(_Msg, State) ->
   {noreply, State}.
 
@@ -31,3 +43,6 @@ terminate(_Reason, _State) ->
 
 code_change(_OldVsn, State, _Extra) ->
   {ok, State}.
+
+empty_state() ->
+  #{ alert_policies => #{ items => [] }}.
