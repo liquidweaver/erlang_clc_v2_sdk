@@ -25,7 +25,7 @@ handle_method(<<"POST">>, Req, State) ->
   {ok, Response} = cowboy_req:reply(Status, [], jiffy:encode(ResponseBody), Req),
   {ok, Response, State}.
 
-authorize(#{ <<"UserName">> := <<"mock_user">>, <<"Password">> := <<"mock_password">> }) ->
+authorize(#{ <<"username">> := <<"mock_user">>, <<"password">> := <<"mock_password">> }) ->
   {ok, #{ <<"accountAlias">> => ?ALIAS,
           <<"locationAlias">> => <<"Region1">>,
           <<"userName">> => <<"mock_user.mock">>,
