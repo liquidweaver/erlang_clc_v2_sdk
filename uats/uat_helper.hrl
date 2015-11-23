@@ -1,15 +1,14 @@
 -include_lib("common_test/include/ct.hrl").
 
--define( V2_API_USERNAME, "UNSET" ).
--define( V2_API_PASSWORD, "UNSET" ).
 -define( START_APP_AND_GET_AUTH_REF(Config),
   {ok, _} = application:ensure_all_started( clc_v2 ),
-  {ok, _} = application:ensure_all_started( mock_clc ),
-  AuthRef = clc_v2:login( <<?V2_API_USERNAME>>, <<?V2_API_PASSWORD>> ),
+  ok = application:set_env(clc_v2, api_base, "http://localhost:8000/v2"),
+  {ok, _} = application:ensure_all_started( mock_clc, temporary ),
+  AuthRef = clc_v2:login( <<"mock_user">>, <<"mock_password">>),
   [{ auth_ref, AuthRef } | Config ] ).
 -define( TEARDOWN(),
   application:stop( clc_v2 ),
-  application:stop( mock_clc ) ).
+  cowboy:stop_listener(http) ).
 
 -define( ITEMS(Value), #{ <<"items">> => Value }).
 -define( RANDOMS(),
