@@ -10,3 +10,15 @@
 -define( TEARDOWN(),
   application:stop( clc_v2 ),
   application:stop( mock_clc ) ).
+
+-define( ITEMS(Value), #{ <<"items">> => Value }).
+-define( RANDOMS(),
+  begin
+    Fun = fun() ->
+            {_, _, Milliseconds} = os:timestamp(),
+            random:seed(Milliseconds),
+            Float = trunc(random:uniform() * 1000)/10,
+            {Float, integer_to_binary(trunc(Float))}
+          end,
+    Fun()
+  end).
