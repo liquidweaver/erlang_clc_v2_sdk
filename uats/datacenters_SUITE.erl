@@ -1,6 +1,6 @@
 -module(datacenters_SUITE).
 -include("uat_helper.hrl").
--export([all/0, suite/0, init_per_suite/1, end_per_suite/1]).
+-export([all/0, suite/0, end_per_testcase/1, init_per_suite/1, end_per_suite/1]).
 -export([clc_v2_datacenters_returns_a_list_with_ca1_in_first_element/1,
          clc_v2_datacenter_returns_a_single_datacenter/1,
          clc_v2_datacenter_capabilities_returns_capabilites_for_a_datacenter/1]).
@@ -12,10 +12,13 @@ suite() ->
       [{timetrap,{minutes,1}}].
 
 init_per_suite(Config) ->
-  ?START_APP_AND_GET_AUTH_REF(Config).
+  ?SUITE_SETUP(Config).
 
 end_per_suite(_Config) ->
-  ?TEARDOWN().
+  ?SUITE_TEARDOWN().
+
+end_per_testcase(Config) ->
+  ?TEST_TEARDOWN().
 
 clc_v2_datacenters_returns_a_list_with_ca1_in_first_element(Config) ->
   AuthRef = proplists:get_value( auth_ref, Config ),

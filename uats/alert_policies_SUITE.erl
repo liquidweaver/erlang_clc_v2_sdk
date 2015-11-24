@@ -10,10 +10,10 @@ suite() ->
       [{timetrap,{minutes,1}}].
 
 init_per_suite(Config) ->
-  ?START_APP_AND_GET_AUTH_REF(Config).
+  ?SUITE_SETUP(Config).
 
 end_per_suite(_Config) ->
-  ?TEARDOWN().
+  ?SUITE_TEARDOWN().
 
 clc_v2_alerts_returns_a_list_of_actions_with_at_least_one_element(Config) ->
   Expected = random_policies(),
