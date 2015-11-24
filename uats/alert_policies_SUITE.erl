@@ -21,7 +21,7 @@ clc_v2_alerts_returns_a_list_of_actions_with_at_least_one_element(Config) ->
 
   Actual = clc_v2:alert_policies(proplists:get_value( auth_ref, Config )),
 
-  assert_equal(Expected, Actual),
+  assert:equal(Expected, Actual),
   ok.
 
 random_policies() ->
@@ -64,23 +64,3 @@ random_policy() ->
           <<"verbs">> => ["GET","DELETE","PUT"]
         }
   }.
-
-assert_equal(Expected, Actual) when is_map(Expected) ->
-  Keys = maps:keys(Expected),
-  ValuesEqual = fun(Key) ->
-                    Expected1 = maps:get(Key,Expected),
-                    Actual1 = maps:get(Key,Actual),
-                    assert_equal(Expected1,Actual1)
-                end,
-
-  lists:all(ValuesEqual, Keys);
-assert_equal([],[]) ->
-  true;
-assert_equal([Expected | ExpectedTail], [Actual | ActualTail])
-                                             when is_integer(Expected) =:= false ->
-  assert_equal(Expected, Actual),
-  assert_equal(ExpectedTail, ActualTail);
-assert_equal(Expected, Actual) ->
-  Expected =:= Actual.
-
-
