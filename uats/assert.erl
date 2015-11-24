@@ -16,6 +16,7 @@ equal([Expected | ExpectedTail], [Actual | ActualTail])
 equal([],[]) ->
   true;
 equal(Expected, Actual) ->
+  ct:pal("  expected: ~p~n    actual: ~p~n", [Expected,Actual]),
   Expected =:= Actual.
 
 
