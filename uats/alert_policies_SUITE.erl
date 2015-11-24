@@ -2,9 +2,9 @@
 -include("uat_helper.hrl").
 -include("mock_clc/include/data.hrl").
 -export([all/0, suite/0, init_per_suite/1, end_per_suite/1]).
--export([clc_v2_alerts_returns_a_list_of_actions_with_at_least_one_element/1]).
+-export([clc_v2_alerts_returns_expected_policies/1]).
 
-all() -> [clc_v2_alerts_returns_a_list_of_actions_with_at_least_one_element].
+all() -> [clc_v2_alerts_returns_expected_policies].
 
 suite() ->
       [{timetrap,{minutes,1}}].
@@ -15,7 +15,7 @@ init_per_suite(Config) ->
 end_per_suite(_Config) ->
   ?SUITE_TEARDOWN().
 
-clc_v2_alerts_returns_a_list_of_actions_with_at_least_one_element(Config) ->
+clc_v2_alerts_returns_expected_policies(Config) ->
   Expected = random_policies(),
   data_server:put(alert_policies, Expected),
 

@@ -2,11 +2,11 @@
 -include("uat_helper.hrl").
 -include("mock_clc/include/data.hrl").
 -export([all/0, suite/0, end_per_testcase/1, init_per_suite/1, end_per_suite/1]).
--export([clc_v2_datacenters_returns_a_list_with_ca1_in_first_element/1,
+-export([clc_v2_datacenters_returns_expected_datacenters/1,
          clc_v2_datacenter_returns_a_single_datacenter/1,
          clc_v2_datacenter_capabilities_returns_capabilites_for_a_datacenter/1]).
 
-all() -> [clc_v2_datacenters_returns_a_list_with_ca1_in_first_element,
+all() -> [clc_v2_datacenters_returns_correct_datacenters,
           clc_v2_datacenter_returns_a_single_datacenter,
           clc_v2_datacenter_capabilities_returns_capabilites_for_a_datacenter].
 suite() ->
@@ -21,7 +21,7 @@ end_per_suite(_Config) ->
 end_per_testcase(Config) ->
   ?TEST_TEARDOWN().
 
-clc_v2_datacenters_returns_a_list_with_ca1_in_first_element(Config) ->
+clc_v2_datacenters_returns_expected_datacenters(Config) ->
   Expected = [random_datacenter(), random_datacenter()],
   data_server:put(datacenters, Expected),
   AuthRef = proplists:get_value( auth_ref, Config ),
