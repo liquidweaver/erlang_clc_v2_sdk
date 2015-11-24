@@ -10,7 +10,6 @@
   application:stop( clc_v2 ),
   cowboy:stop_listener(http) ).
 
--define( ITEMS(Value), #{ <<"items">> => Value }).
 -define( RANDOMS(),
   begin
     Fun = fun() ->

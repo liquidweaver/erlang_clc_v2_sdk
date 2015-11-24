@@ -1,5 +1,6 @@
 -module(alert_policies_SUITE).
 -include("uat_helper.hrl").
+-include("mock_clc/include/data.hrl").
 -export([all/0, suite/0, init_per_suite/1, end_per_suite/1]).
 -export([clc_v2_alerts_returns_a_list_of_actions_with_at_least_one_element/1]).
 
@@ -15,7 +16,7 @@ end_per_suite(_Config) ->
   ?TEARDOWN().
 
 clc_v2_alerts_returns_a_list_of_actions_with_at_least_one_element(Config) ->
-  Expected = ?ITEMS([random_policy(), random_policy()]),
+  Expected = random_policies(),
   data_server:put(alert_policies, Expected),
 
   Actual = clc_v2:alert_policies(proplists:get_value( auth_ref, Config )),
@@ -23,10 +24,20 @@ clc_v2_alerts_returns_a_list_of_actions_with_at_least_one_element(Config) ->
   assert_equal(Expected, Actual),
   ok.
 
+random_policies() ->
+  Items = [random_policy(),
+           random_policy()],
+
+  #{ <<"items">> => Items,
+     <<"links">> => #{ <<"href">> => <<"/v2/alertPolicies/", ?ALIAS/binary>>,
+                       <<"rel">> => <<"self">>,
+                       <<"verbs">> => ["GET","POST"] } }.
+
 random_policy() ->
   {Float, Bin} = ?RANDOMS(),
+  Id = <<"id", Bin/binary>>,
 
-  #{ <<"id">> => <<"id", Bin/binary>>,
+  #{ <<"id">> => Id,
      <<"name">> => <<"name", Bin/binary>>,
      <<"actions">> =>
       [ #{
@@ -45,7 +56,13 @@ random_policy() ->
           <<"metric">> => <<"disk">>,
           <<"duration">> => "01:23:45",
           <<"threshold">> => Float
-        }]
+        }],
+      <<"links">> =>
+       #{
+          <<"href">> => <<"/v2/alertPolicies/", ?ALIAS/binary, "/", Id/binary>>,
+          <<"rel">> => <<"self">>,
+          <<"verbs">> => ["GET","DELETE","PUT"]
+        }
   }.
 
 assert_equal(Expected, Actual) when is_map(Expected) ->
