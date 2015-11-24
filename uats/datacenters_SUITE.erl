@@ -6,7 +6,7 @@
          clc_v2_datacenter_returns_a_single_datacenter/1,
          clc_v2_datacenter_capabilities_returns_capabilites_for_a_datacenter/1]).
 
-all() -> [clc_v2_datacenters_returns_correct_datacenters,
+all() -> [clc_v2_datacenters_returns_expected_datacenters,
           clc_v2_datacenter_returns_a_single_datacenter,
           clc_v2_datacenter_capabilities_returns_capabilites_for_a_datacenter].
 suite() ->
@@ -64,7 +64,7 @@ random_datacenter() ->
        #{ <<"href">> => <<Link/binary, "/computeLimits">>,
           <<"ref">> => <<"computeLimits">>,
           <<"verbs">> => ["GET","POST"] },
-       #{ <<"href">> => <<Link/binary, "/networLimits">>,
+       #{ <<"href">> => <<Link/binary, "/networkLimits">>,
           <<"ref">> => <<"networkLimits">>,
           <<"verbs">> => ["GET"] },
        #{ <<"href">> => <<"/v2/vmImport/", LinkSuffix/binary, "/available">>,
