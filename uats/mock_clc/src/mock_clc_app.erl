@@ -23,7 +23,7 @@ route_matchers() ->
      [
       { "/v2/authentication/login", auth_handler, [] },
       { "/v2/alertPolicies/:alias", alertpolicy_handler, [] },
-      { "/v2/datacenters/:alias", datacenter_handler, [] },
-      { "/v2/datacenters/:alias/:id", datacenter_handler, [] }
+      { "/v2/datacenters/:alias/[:id]", datacenter_handler, [] },
+      { "/v2/datacenters/:alias/:id/deploymentCapabilities", dc_capability_handler, [] }
      ]
     } ].

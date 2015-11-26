@@ -42,10 +42,14 @@ clc_v2_datacenter_returns_a_single_datacenter(Config) ->
   ok.
 
 clc_v2_datacenter_capabilities_returns_capabilites_for_a_datacenter(Config) ->
+  Datacenter = <<"dc1">>,
+  Expected = random_capabilities(),
+  data_server:put(datacenter_capabilities, Datacenter, Expected),
+
   AuthRef = proplists:get_value( auth_ref, Config ),
-  Capabilities = clc_v2:datacenter_capabilities(AuthRef, <<"ca1">>),
-  io:format( "Datacenter capabilities ~p~n", [Capabilities] ),
-  #{ <<"supportsPremiumStorage">> := _ } = Capabilities,
+  Actual = clc_v2:datacenter_capabilities(AuthRef, Datacenter),
+
+  assert:equal(Expected, Actual),
   ok.
 
 random_datacenter() ->
@@ -54,7 +58,7 @@ random_datacenter() ->
   LinkSuffix = <<?ALIAS/binary, "/", Id/binary>>,
   Link = <<"/v2/datacenters/", LinkSuffix/binary>>,
 
-  #{ <<"id">> => <<"id", Id/binary>>,
+  #{ <<"id">> => Id,
      <<"name">> => <<"name", Bin/binary>>,
      <<"links">> =>
       [#{ <<"href">> => Link,
@@ -73,4 +77,38 @@ random_datacenter() ->
        #{ <<"href">> => <<"/v2/vmImport/", LinkSuffix/binary, "/available">>,
           <<"ref">> => <<"availableOvfs">>,
           <<"verbs">> => ["GET"] }]
+   }.
+
+random_capabilities() ->
+  #{ <<"dataCenterEnabled">> => true,
+     <<"importVMEnabled">> => true,
+     <<"supportsPremiumStorage">> => true,
+     <<"supportsSharedLoadBalancer">> => true,
+     <<"supportsBareMetalServers">> => true,
+     <<"deployableNetworks">> => [],
+     <<"importableOSTypes">> =>
+      [#{ <<"id">> => 123,
+         <<"description">> => <<"123">>,
+         <<"labProductCode">> => <<"LPC123">>,
+         <<"premiumProductCode">> => <<"PPC123">>,
+         <<"type">> => <<"OSA_BBit">> },
+       #{ <<"id">> => 456,
+         <<"description">> => <<"456">>,
+         <<"labProductCode">> => <<"LPC456">>,
+         <<"premiumProductCode">> => <<"PPC456">>,
+         <<"type">> => <<"OSC_DBit">> }],
+    <<"templates">> =>
+      [#{ <<"name">> => <<"Template1">>,
+          <<"osType">> => <<"OSA_BBit">>,
+          <<"description">> => <<"Template1 Description">>,
+          <<"storageSizeGB">> => 0,
+          <<"capabilities">> => [<<"cpuAutoscale">>],
+          <<"reservedDrivePaths">> => ["bin", "boot", "dev"] },
+      #{ <<"name">> => <<"Template2">>,
+          <<"osType">> => <<"OSC_DBit">>,
+          <<"description">> => <<"Template2 Description">>,
+          <<"storageSizeGB">> => 0,
+          <<"capabilities">> => [<<"cpuAutoscale">>],
+          <<"reservedDrivePaths">> => ["bin", "boot", "dev"] }
+      ]
    }.
