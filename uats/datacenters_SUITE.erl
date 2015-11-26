@@ -1,6 +1,5 @@
 -module(datacenters_SUITE).
 -include("uat_helper.hrl").
--include("mock_clc/include/data.hrl").
 -export([all/0, suite/0, end_per_testcase/1, init_per_suite/1, end_per_suite/1]).
 -export([clc_v2_datacenters_returns_expected_datacenters/1,
          clc_v2_datacenter_returns_a_single_datacenter/1,
@@ -55,7 +54,7 @@ clc_v2_datacenter_capabilities_returns_capabilites_for_a_datacenter(Config) ->
 random_datacenter() ->
   {Float, Bin} = ?RANDOMS(),
   Id = <<"id", Bin/binary>>,
-  LinkSuffix = <<?ALIAS/binary, "/", Id/binary>>,
+  LinkSuffix = <<"Alias/", Id/binary>>,
   Link = <<"/v2/datacenters/", LinkSuffix/binary>>,
 
   #{ <<"id">> => Id,

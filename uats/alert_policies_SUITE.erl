@@ -1,6 +1,5 @@
 -module(alert_policies_SUITE).
 -include("uat_helper.hrl").
--include("mock_clc/include/data.hrl").
 -export([all/0, suite/0, init_per_suite/1, end_per_suite/1]).
 -export([clc_v2_alerts_returns_expected_policies/1]).
 
@@ -29,7 +28,7 @@ random_policies() ->
            random_policy()],
 
   #{ <<"items">> => Items,
-     <<"links">> => #{ <<"href">> => <<"/v2/alertPolicies/", ?ALIAS/binary>>,
+     <<"links">> => #{ <<"href">> => <<"/v2/alertPolicies/Alias">>,
                        <<"rel">> => <<"self">>,
                        <<"verbs">> => ["GET","POST"] } }.
 
@@ -59,7 +58,7 @@ random_policy() ->
         }],
       <<"links">> =>
        #{
-          <<"href">> => <<"/v2/alertPolicies/", ?ALIAS/binary, "/", Id/binary>>,
+          <<"href">> => <<"/v2/alertPolicies/Alias/", Id/binary>>,
           <<"rel">> => <<"self">>,
           <<"verbs">> => ["GET","DELETE","PUT"]
         }

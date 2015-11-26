@@ -19,11 +19,12 @@ stop(_State) ->
   ok.
 
 route_matchers() ->
+
   [ {'_',
      [
       { "/v2/authentication/login", auth_handler, [] },
-      { "/v2/alertPolicies/:alias", alertpolicy_handler, [] },
-      { "/v2/datacenters/:alias/[:id]", datacenter_handler, [] },
-      { "/v2/datacenters/:alias/:id/deploymentCapabilities", dc_capability_handler, [] }
+      { "/v2/alertPolicies/" ++ ?ALIAS, alertpolicy_handler, [] },
+      { "/v2/datacenters/" ++ ?ALIAS ++ "/[:id]", datacenter_handler, [] },
+      { "/v2/datacenters/" ++ ?ALIAS ++ "/:id/deploymentCapabilities", dc_capability_handler, [] }
      ]
     } ].

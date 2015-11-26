@@ -26,7 +26,7 @@ handle_method(<<"POST">>, Req, State) ->
   {ok, Response, State}.
 
 authorize(#{ <<"username">> := <<"mock_user">>, <<"password">> := <<"mock_password">> }) ->
-  {ok, #{ <<"accountAlias">> => ?ALIAS,
+  {ok, #{ <<"accountAlias">> => list_to_binary(?ALIAS),
           <<"locationAlias">> => <<"Region1">>,
           <<"userName">> => <<"mock_user.mock">>,
           <<"roles">> => [<<"AccountAdmin">>],
