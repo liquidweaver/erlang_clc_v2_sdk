@@ -24,18 +24,21 @@ end_per_testcase(Config) ->
 clc_v2_datacenters_returns_expected_datacenters(Config) ->
   Expected = [random_datacenter(), random_datacenter()],
   data_server:put(datacenters, Expected),
-  AuthRef = proplists:get_value( auth_ref, Config ),
 
+  AuthRef = proplists:get_value( auth_ref, Config ),
   Actual = clc_v2:datacenters(AuthRef),
 
   assert:equal(Expected, Actual),
   ok.
 
 clc_v2_datacenter_returns_a_single_datacenter(Config) ->
+  Expected = #{<<"id">> := Id} = random_datacenter(),
+  data_server:put(datacenters, Id, Expected),
+
   AuthRef = proplists:get_value( auth_ref, Config ),
-  Datacenter = clc_v2:datacenter(AuthRef, <<"ca1">>),
-  io:format( "Datacenter: ~p~n", [Datacenter] ),
-  #{ <<"id">> := <<"ca1">> } = Datacenter,
+  Actual = clc_v2:datacenter(AuthRef, Id),
+
+  assert:equal(Expected, Actual),
   ok.
 
 clc_v2_datacenter_capabilities_returns_capabilites_for_a_datacenter(Config) ->
