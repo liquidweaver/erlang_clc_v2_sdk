@@ -1,18 +1,24 @@
 -include("data.hrl").
 -module(auth_handler).
--export([init/3, terminate/3, handle/2]).
+-export([init/3,
+         rest_init/2,
+         allowed_methods/2,
+         content_types_accepted/2,
+         post/2]).
 
-init(_Type, Req, _Options) ->
-  {ok, Req, undefined}.
+init(_ReqType, _Req, _Options) ->
+  {upgrade, protocol, cowboy_rest}.
 
-terminate(_Reason, _Req, _State) ->
-  ok.
+rest_init(Req, _Opts) ->
+  {ok, Req, undefined_state}.
 
-handle(Req, State) ->
-  {Method, Req1} = cowboy_req:method(Req),
-  handle_method(Method, Req1, State).
+allowed_methods(Req, State) ->
+  {[<<"POST">>], Req, State}.
 
-handle_method(<<"POST">>, Req, State) ->
+content_types_accepted(Req, State) ->
+  {[{{<<"application">>, <<"json">>, []}, post}], Req, State}.
+
+post(Req, State) ->
   {ok, Body, _} = cowboy_req:body(Req),
   Body1 = jiffy:decode(Body, [return_maps]),
 
