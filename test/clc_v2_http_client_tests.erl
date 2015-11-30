@@ -23,6 +23,12 @@ get_calls_ibrowse_with_base_api_url_and_route() ->
 
   ?called( ibrowse, send_req, ["http://api.base/route1", ?any, get, []] ).
 
+get_calls_ibrowse_with_accept_json_header() ->
+  clc_v2_http_client:get( auth_ref1, ["route1"] ),
+
+  Headers = ?capture( ibrowse, send_req, 4, 2 ),
+  ?assert(lists:member( {"Accept", "application/json"}, Headers )).
+
 get_calls_ibrowse_with_bearer_token_header() ->
   clc_v2_http_client:get( auth_ref1, ["route1"] ),
 
