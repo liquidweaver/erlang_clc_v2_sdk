@@ -4,3 +4,4 @@ script:
 - make rebar
 - make deps
 - make tests
+- make uats
