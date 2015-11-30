@@ -29,9 +29,9 @@ rebar.config.lock:
 	$(REBAR) compile
 	$(REBAR) lock-deps
 
-mock_compile: rebar
+mock_compile: rebar mock_deps
 	cd $(MOCK_DIR) && \
-	../../$(REBAR) skip_deps=true compile
+	../../$(REBAR) compile
 
 mock_deps: rebar
 	cd $(MOCK_DIR) && \
