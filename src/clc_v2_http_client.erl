@@ -11,7 +11,8 @@
 get( AuthRef, Route ) ->
   UserInfo = clc_v2_auth:user_info( AuthRef ),
   BearerToken = clc_v2_authentication:bearer_token( UserInfo ),
-  Headers = [{"Authorization", "Bearer " ++ BearerToken}],
+  Headers = [{"Authorization", "Bearer " ++ BearerToken},
+             {"Accept", "application/json"}],
   Url = build_url(UserInfo, Route, api_base()),
   send_req( Url, Headers, get, []).
 
