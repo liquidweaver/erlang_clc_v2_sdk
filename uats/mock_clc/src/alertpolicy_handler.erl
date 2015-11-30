@@ -7,6 +7,7 @@
          content_types_provided/2,
          is_authorized/2,
          forbidden/2,
+         unsupported/2,
          get/2]).
 
 init(_ReqType, _Req, _Options) ->
@@ -19,7 +20,10 @@ allowed_methods(Req, State) ->
   {[<<"GET">>], Req, State}.
 
 content_types_provided(Req, State) ->
-  {[{{<<"application">>, <<"json">>, []}, get}], Req, State}.
+  {[
+    {<<"*">>, unsupported},
+    {<<"application/json">>, get}
+   ],Req, State}.
 
 is_authorized(Req, State) ->
 	case auth_helper:is_authenticated(Req) of
@@ -29,6 +33,10 @@ is_authorized(Req, State) ->
 
 forbidden(Req, State) ->
 	{(not auth_helper:is_authorized(Req)), Req, State}.
+
+unsupported(Req, State) ->
+  Response = cowboy_req:reply(400, [], <<"unsupported content type">>, Req),
+  {ok, Response, State}.
 
 get(Req, State) ->
   Response = data_server:get(alert_policies),
