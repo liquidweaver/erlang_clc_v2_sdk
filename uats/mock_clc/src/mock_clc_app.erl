@@ -24,7 +24,7 @@ route_matchers() ->
      [
       { "/v2/authentication/login",
           auth_handler, [] },
-      { io_lib:format("/v2/alertPolicies/~s", [?ALIAS]),
+      { io_lib:format("/v2/alertPolicies/~s/[:id]", [?ALIAS]),
           alertpolicy_handler, [] },
       { io_lib:format("/v2/datacenters/~s/[:id]", [?ALIAS]),
           datacenter_handler, [] },

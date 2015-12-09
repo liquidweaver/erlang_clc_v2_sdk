@@ -1,9 +1,11 @@
 -module(alert_policies_SUITE).
 -include("uat_helper.hrl").
 -export([all/0, suite/0, init_per_suite/1, end_per_suite/1]).
--export([clc_v2_alerts_returns_expected_policies/1]).
+-export([clc_v2_alerts_returns_expected_policies/1,
+         clc_v2_alerts_returns_a_single_policy/1]).
 
-all() -> [clc_v2_alerts_returns_expected_policies].
+all() -> [clc_v2_alerts_returns_expected_policies,
+          clc_v2_alerts_returns_a_single_policy].
 
 suite() ->
       [{timetrap,{minutes,1}}].
@@ -19,6 +21,16 @@ clc_v2_alerts_returns_expected_policies(Config) ->
   data_server:put(alert_policies, Expected),
 
   Actual = clc_v2:alert_policies(proplists:get_value( auth_ref, Config )),
+
+  assert:equal(Expected, Actual),
+  ok.
+
+clc_v2_alerts_returns_a_single_policy(Config) ->
+  Expected = #{<<"id">> := Id} = random_policy(),
+  data_server:put(alert_policies, Id, Expected),
+
+  AuthRef = proplists:get_value( auth_ref, Config ),
+  Actual = clc_v2:alert_policy(AuthRef, Id),
 
   assert:equal(Expected, Actual),
   ok.

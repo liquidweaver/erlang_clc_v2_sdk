@@ -39,5 +39,12 @@ unsupported(Req, State) ->
   {ok, Response, State}.
 
 get(Req, State) ->
-  Response = data_server:get(alert_policies),
+  Id = element(1, cowboy_req:binding(id, Req)),
+  Response = get_policies(Id),
   {jiffy:encode(Response), Req, State}.
+
+get_policies(undefined) ->
+  data_server:get(alert_policies);
+get_policies(Id) ->
+  data_server:get(alert_policies, Id).
+
