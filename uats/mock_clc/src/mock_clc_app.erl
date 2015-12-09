@@ -22,9 +22,13 @@ route_matchers() ->
 
   [ {'_',
      [
-      { "/v2/authentication/login", auth_handler, [] },
-      { "/v2/alertPolicies/" ++ ?ALIAS, alertpolicy_handler, [] },
-      { "/v2/datacenters/" ++ ?ALIAS ++ "/[:id]", datacenter_handler, [] },
-      { "/v2/datacenters/" ++ ?ALIAS ++ "/:id/deploymentCapabilities", dc_capability_handler, [] }
+      { "/v2/authentication/login",
+          auth_handler, [] },
+      { io_lib:format("/v2/alertPolicies/~s", [?ALIAS]),
+          alertpolicy_handler, [] },
+      { io_lib:format("/v2/datacenters/~s/[:id]", [?ALIAS]),
+          datacenter_handler, [] },
+      { io_lib:format("/v2/datacenters/~s/:id/deploymentCapabilities", [?ALIAS]),
+          dc_capability_handler, [] }
      ]
     } ].
