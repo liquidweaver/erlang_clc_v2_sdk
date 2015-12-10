@@ -2,10 +2,14 @@
 -include("uat_helper.hrl").
 -export([all/0, suite/0, init_per_suite/1, end_per_suite/1]).
 -export([clc_v2_alerts_returns_expected_policies/1,
-         clc_v2_alerts_returns_a_single_policy/1]).
+         clc_v2_alerts_returns_a_single_policy/1,
+         clc_v2_alerts_creates_expected_policy/1
+        ]).
 
 all() -> [clc_v2_alerts_returns_expected_policies,
-          clc_v2_alerts_returns_a_single_policy].
+          clc_v2_alerts_returns_a_single_policy,
+          clc_v2_alerts_creates_expected_policy
+         ].
 
 suite() ->
       [{timetrap,{minutes,1}}].
@@ -33,6 +37,31 @@ clc_v2_alerts_returns_a_single_policy(Config) ->
   Actual = clc_v2:alert_policy(AuthRef, Id),
 
   assert:equal(Expected, Actual),
+  ok.
+
+clc_v2_alerts_creates_expected_policy(Config) ->
+  Spec = #{name => <<"p1">>,
+           email_recipients => [<<"r1@host.com">>, <<"r2@host.com">>],
+           triggers =>
+            [ #{ metric => cpu, duration => <<"00:00:01">>, threshold => 67.8 },
+              #{ metric => memory, duration => <<"01:23:45">>, threshold => 0.12 } ]
+          },
+  Expected = #{ <<"name">> => <<"p1">>,
+                <<"actions">> =>
+                  [#{ <<"action">> => <<"email">>,
+                      <<"settings">> => #{ <<"recipients">> => [<<"r1@host.com">>, <<"r2@host.com">>] }
+                  }],
+                <<"triggers">> => 
+                  [#{ <<"metric">> => <<"cpu">>, <<"duration">> => <<"00:00:01">>, <<"threshold">> => 67.8 },
+                   #{ <<"metric">> => <<"memory">>, <<"duration">> => <<"01:23:45">>, <<"threshold">> => 0.12 }
+                  ]
+              },
+
+
+  AuthRef = proplists:get_value( auth_ref, Config ),
+  Id = clc_v2:create_alert_policy(AuthRef, Spec),
+ 
+  assert:equal(Expected, data_server:get(alert_policies, Id)),
   ok.
 
 random_policies() ->

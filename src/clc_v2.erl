@@ -5,7 +5,8 @@
   datacenter/2,
   datacenter_capabilities/2,
   alert_policies/1,
-  alert_policy/2
+  alert_policy/2,
+  create_alert_policy/2
   ] ).
 
 -spec login( Username::binary(), Password::binary() ) -> clc_v2_auth:auth_ref().
@@ -32,3 +33,7 @@ alert_policies(Ref) ->
 -spec alert_policy(Ref::clc_v2_auth:auth_ref(), Id::binary()) -> map().
 alert_policy(Ref, Id) ->
    clc_v2_alert_policies:get(Ref, Id).
+
+-spec create_alert_policy(Ref::clc_v2_auth:auth_ref(), Spec::map) -> binary().
+create_alert_policy(_Ref, _Spec) ->
+  ok.
