@@ -41,6 +41,14 @@ clc_v2_alert_policy_delegates_to_alert_policies_get() ->
 
   ?called(clc_v2_alert_policies, get, [auth_ref1, id1]).
 
+clc_v2_create_alert_policy_delegates_to_alert_policies_create() ->
+  ?meck(clc_v2_alert_policies, [non_strict]),
+  ?stub(clc_v2_alert_policies, create, 2, id1),
+
+  ?assertEqual(id1, clc_v2:create_alert_policy(auth_ref1, spec1)),
+
+  ?called(clc_v2_alert_policies, create, [auth_ref1, spec1]).
+
 login_creates_new_auth_worker_under_auth_supervisor() ->
   ?meck( clc_v2_auth_sup, [non_strict] ),
   ?stub( clc_v2_auth_sup, create_worker, 2, {ok, authref1}),
