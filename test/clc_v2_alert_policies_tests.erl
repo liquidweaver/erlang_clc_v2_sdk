@@ -61,7 +61,7 @@ update_calls_http_client_post_with_expected_route() ->
 
   clc_v2_alert_policies:update( auth_ref1, ?EMPTY_POLICY(), <<"id1">> ),
 
-  ?called( clc_v2_http_client, put, [auth_ref1, ["alertPolicies", account_alias, <<"id1">>], ?any] ).
+  ?called( clc_v2_http_client, put, [auth_ref1, ["alertPolicies", account_alias, "id1"], ?any] ).
 
 update_calls_http_client_post_with_expected_body() ->
   ?stub( clc_v2_http_client, put, 3, result1 ),

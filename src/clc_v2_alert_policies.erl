@@ -26,7 +26,7 @@ create( AuthRef, Spec ) ->
 -spec update( AuthRef::clc_v2_auth:auth_ref(), Spec::map(), Id::binary() ) -> binary().
 update( AuthRef, Spec, Id ) ->
   Spec1 = to_api_spec(Spec),
-  clc_v2_http_client:put( AuthRef, ["alertPolicies", account_alias, Id ], Spec1 ).
+  clc_v2_http_client:put( AuthRef, ["alertPolicies", account_alias, binary_to_list(Id) ], Spec1 ).
 
 to_api_spec( #{ name := Name, email_recipients := Recipients, triggers := Triggers } ) ->
   #{ name => Name,
