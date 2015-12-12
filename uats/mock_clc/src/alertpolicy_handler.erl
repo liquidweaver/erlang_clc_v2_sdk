@@ -9,8 +9,8 @@
          is_authorized/2,
          forbidden/2,
          unsupported/2,
-         get/2,
-         create/2]).
+         read/2,
+         write/2]).
 
 init(_ReqType, _Req, _Options) ->
   {upgrade, protocol, cowboy_rest}.
@@ -24,13 +24,13 @@ allowed_methods(Req, State) ->
 content_types_provided(Req, State) ->
   {[
     {<<"*">>, unsupported},
-    {<<"application/json">>, get}
+    {<<"application/json">>, read}
    ],Req, State}.
 
 content_types_accepted(Req, State) ->
   {[
     {<<"*">>, unsupported},
-    {<<"application/json">>, create}
+    {<<"application/json">>, write} 
    ],Req, State}.
 
 is_authorized(Req, State) ->
@@ -46,16 +46,19 @@ unsupported(Req, State) ->
   Response = cowboy_req:reply(400, [], <<"unsupported content type">>, Req),
   {ok, Response, State}.
 
-get(Req, State) ->
+read(Req, State) ->
   Id = element(1, cowboy_req:binding(id, Req)),
   Response = get_policies(Id),
   {jiffy:encode(Response), Req, State}.
 
-create(Req, State) ->
+write(Req, State) ->
+  Id = case cowboy_req:method(Req) of
+         {<<"POST">>, _} -> integer_to_binary(element(3, now())); 
+         _ -> element(1, cowboy_req:binding(id, Req)) 
+       end,
   {ok, Body, _} = cowboy_req:body(Req),
   Spec = jiffy:decode(Body, [return_maps]),
 
-  Id = integer_to_binary(element(3, now())),
   data_server:put(alert_policies, Id, Spec),
 
   {ok, Response} = cowboy_req:reply(200, [], jiffy:encode(#{<<"id">> => Id}), Req),
