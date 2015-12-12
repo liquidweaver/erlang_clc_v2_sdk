@@ -3,7 +3,8 @@
 -export([
   get/1,
   get/2,
-  create/2
+  create/2,
+  update/3
   ]).
 
 -spec get( AuthRef::clc_v2_auth:auth_ref() ) -> map().
@@ -21,6 +22,11 @@ create( AuthRef, Spec ) ->
   Spec1 = to_api_spec(Spec),
   {ok, #{ <<"id">> := Id } } = clc_v2_http_client:post( AuthRef, ["alertPolicies", account_alias ], Spec1 ),
   Id.
+
+-spec update( AuthRef::clc_v2_auth:auth_ref(), Spec::map(), Id::binary() ) -> binary().
+update( AuthRef, Spec, Id ) ->
+  Spec1 = to_api_spec(Spec),
+  clc_v2_http_client:put( AuthRef, ["alertPolicies", account_alias, Id ], Spec1 ).
 
 to_api_spec( #{ name := Name, email_recipients := Recipients, triggers := Triggers } ) ->
   #{ name => Name,
