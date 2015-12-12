@@ -19,7 +19,7 @@ rest_init(Req, _Opts) ->
   {ok, Req, undefined_state}.
 
 allowed_methods(Req, State) ->
-  {[<<"GET">>, <<"POST">>], Req, State}.
+  {[<<"GET">>, <<"POST">>, <<"PUT">>], Req, State}.
 
 content_types_provided(Req, State) ->
   {[
@@ -30,7 +30,7 @@ content_types_provided(Req, State) ->
 content_types_accepted(Req, State) ->
   {[
     {<<"*">>, unsupported},
-    {<<"application/json">>, write} 
+    {<<"application/json">>, write}
    ],Req, State}.
 
 is_authorized(Req, State) ->
@@ -53,8 +53,8 @@ read(Req, State) ->
 
 write(Req, State) ->
   Id = case cowboy_req:method(Req) of
-         {<<"POST">>, _} -> integer_to_binary(element(3, now())); 
-         _ -> element(1, cowboy_req:binding(id, Req)) 
+         {<<"POST">>, _} -> integer_to_binary(element(3, now()));
+         _ -> element(1, cowboy_req:binding(id, Req))
        end,
   {ok, Body, _} = cowboy_req:body(Req),
   Spec = jiffy:decode(Body, [return_maps]),
