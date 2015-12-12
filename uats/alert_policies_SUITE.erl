@@ -81,7 +81,7 @@ clc_v2_alerts_updates_expected_policy(Config) ->
                   [#{ <<"metric">> => <<"cpu">>, <<"duration">> => <<"00:00:01">>, <<"threshold">> => 67.8 } ]
               },
 
-  Id = 123,
+  Id = <<"123">>,
   AuthRef = proplists:get_value( auth_ref, Config ),
   clc_v2:update_alert_policy(AuthRef, Spec, Id),
 
