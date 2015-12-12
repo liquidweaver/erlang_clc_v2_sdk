@@ -9,7 +9,7 @@
 -spec login( Username::string(), Password::string() ) -> map().
 login( Username, Password ) ->
   Body = #{username => Username, password => Password},
-  clc_v2_http_client:post( ["authentication", "login"], Body ).
+  clc_v2_http_client:post( undefined, ["authentication", "login"], Body ).
 
 -spec account_alias( UserInfo::clc_v2_auth:user_info() ) -> string().
 account_alias( #{ <<"accountAlias">> := Alias } ) ->

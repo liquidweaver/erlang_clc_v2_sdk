@@ -52,5 +52,6 @@ maybe_call_function(F, A) ->
 -define( seq(S), meck:seq(S) ).
 
 -define( called( M, F, A), ?assert( meck:called( M, F, A ) ) ).
+-define( not_called( M, F, A), ?assertNot( meck:called( M, F, A ) ) ).
 -define( capture_when(When, Method, Function, Arity, CapturePosition), meck:capture(case When of second -> 2; _ -> When end, Method, Function, ['_' || _ <- lists:seq(1, Arity)], CapturePosition) ).
 -define( capture(Method, Function, Arity, CapturePosition), ?capture_when(first, Method, Function, Arity, CapturePosition) ).
