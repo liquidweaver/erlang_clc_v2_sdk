@@ -4,6 +4,7 @@
          rest_init/2,
          allowed_methods/2,
          content_types_accepted/2,
+         content_types_provided/2,
          post/2]).
 
 init(_ReqType, _Req, _Options) ->
@@ -16,6 +17,9 @@ allowed_methods(Req, State) ->
   {[<<"POST">>], Req, State}.
 
 content_types_accepted(Req, State) ->
+  {[{{<<"application">>, <<"json">>, []}, post}], Req, State}.
+
+content_types_provided(Req, State) ->
   {[{{<<"application">>, <<"json">>, []}, post}], Req, State}.
 
 post(Req, State) ->
