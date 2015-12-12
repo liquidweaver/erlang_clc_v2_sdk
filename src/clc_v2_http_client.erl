@@ -2,9 +2,12 @@
 
 -export([
   get/2,
-  post/3
+  post/3,
+  put/3
   ]).
 
+-define(PAYLOAD_HEADERS(), [ {"Content-Type","application/json"},
+                              {"Accept", "application/json"} ] ).
 -type route_token() :: account_alias.
 
 -spec get( AuthRef::clc_v2_auth:auth_ref(), Route::[string() | route_token()] ) -> { ok, map() } | { error, term() }.
@@ -14,9 +17,11 @@ get( AuthRef, Route ) ->
 
 -spec post( AuthRef::clc_v2_auth:auth_ref(), Route::[string() | route_token()], Body::string() | binary() ) -> { ok, map() } | { error, term() }.
 post( AuthRef, Route, Body ) ->
-  Headers = [ {"Content-Type","application/json"},
-              {"Accept", "application/json"} ],
-  send_req( AuthRef, Route, Headers, post, jiffy:encode(Body)).
+  send_req( AuthRef, Route, ?PAYLOAD_HEADERS(), post, jiffy:encode(Body)).
+
+-spec put( AuthRef::clc_v2_auth:auth_ref(), Route::[string() | route_token()], Body::string() | binary() ) -> { ok, map() } | { error, term() }.
+put( AuthRef, Route, Body ) ->
+  send_req( AuthRef, Route, ?PAYLOAD_HEADERS(), put, jiffy:encode(Body)).
 
 send_req( undefined, Route, Headers, Method, Body ) ->
   Url = build_url(#{}, Route, api_base()),
