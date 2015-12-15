@@ -4,13 +4,15 @@
 -export([clc_v2_alerts_returns_expected_policies/1,
          clc_v2_alerts_returns_a_single_policy/1,
          clc_v2_alerts_creates_expected_policy/1,
-         clc_v2_alerts_updates_expected_policy/1
+         clc_v2_alerts_updates_expected_policy/1,
+         clc_v2_alerts_deletes_expected_policy/1
         ]).
 
 all() -> [clc_v2_alerts_returns_expected_policies,
           clc_v2_alerts_returns_a_single_policy,
           clc_v2_alerts_creates_expected_policy,
-          clc_v2_alerts_updates_expected_policy
+          clc_v2_alerts_updates_expected_policy,
+          clc_v2_alerts_deletes_expected_policy
          ].
 
 suite() ->
@@ -88,6 +90,15 @@ clc_v2_alerts_updates_expected_policy(Config) ->
   assert:equal(Expected, data_server:get(alert_policies, Id)),
   ok.
 
+
+clc_v2_alerts_deletes_expected_policy(Config) ->
+  Id = <<"123">>,
+
+  AuthRef = proplists:get_value( auth_ref, Config ),
+  clc_v2:delete_alert_policy(AuthRef, Id),
+
+  assert:equal(deleted, data_server:get(alert_policies, Id)),
+  ok.
 
 random_policies() ->
   Items = [random_policy(),

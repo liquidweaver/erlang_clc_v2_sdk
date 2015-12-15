@@ -10,7 +10,8 @@
          forbidden/2,
          unsupported/2,
          read/2,
-         write/2]).
+         write/2,
+         delete_resource/2]).
 
 init(_ReqType, _Req, _Options) ->
   {upgrade, protocol, cowboy_rest}.
@@ -19,7 +20,7 @@ rest_init(Req, _Opts) ->
   {ok, Req, undefined_state}.
 
 allowed_methods(Req, State) ->
-  {[<<"GET">>, <<"POST">>, <<"PUT">>], Req, State}.
+  {[<<"GET">>, <<"POST">>, <<"PUT">>, <<"DELETE">>], Req, State}.
 
 content_types_provided(Req, State) ->
   {[
@@ -63,6 +64,14 @@ write(Req, State) ->
 
   {ok, Response} = cowboy_req:reply(200, [], jiffy:encode(#{<<"id">> => Id}), Req),
   {ok, Response, State}.
+
+delete_resource(Req, State) ->
+  Id = element(1, cowboy_req:binding(id, Req)),
+
+  data_server:put(alert_policies, Id, deleted),
+
+  {true, Req, State}.
+
 
 get_policies(undefined) ->
   data_server:get(alert_policies);

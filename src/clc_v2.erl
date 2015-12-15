@@ -7,7 +7,8 @@
   alert_policies/1,
   alert_policy/2,
   create_alert_policy/2,
-  update_alert_policy/3
+  update_alert_policy/3,
+  delete_alert_policy/2
   ] ).
 
 -spec login( Username::binary(), Password::binary() ) -> clc_v2_auth:auth_ref().
@@ -42,3 +43,7 @@ create_alert_policy(Ref, Spec) ->
 -spec update_alert_policy(Ref::clc_v2_auth:auth_ref(), Spec::map, Id::binary()) -> binary().
 update_alert_policy(Ref, Spec, Id) ->
    clc_v2_alert_policies:update(Ref, Spec, Id).
+
+-spec delete_alert_policy(Ref::clc_v2_auth:auth_ref(), Id::binary()) -> ok.
+delete_alert_policy(Ref, Id) ->
+   ok.
