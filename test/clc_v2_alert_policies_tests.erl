@@ -89,14 +89,14 @@ update_returns_expected_value() ->
 
   Actual = clc_v2_alert_policies:update( auth_ref1, ?EMPTY_POLICY(), <<>> ),
 
-  ?assertEqual(result1, Actual).
+  ?assertEqual(ok, Actual).
 
 delete_returns_expected_value() ->
   ?stub( clc_v2_http_client, delete, 2, result1 ),
 
   Actual = clc_v2_alert_policies:delete( auth_ref1, <<"id1">>),
 
-  ?assertEqual( result1, Actual ).
+  ?assertEqual( ok, Actual ).
 
 delete_calls_http_client_post_with_expected_route() ->
   ?stub( clc_v2_http_client, delete, 2, result1 ),

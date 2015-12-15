@@ -85,7 +85,7 @@ clc_v2_alerts_updates_expected_policy(Config) ->
 
   Id = <<"123">>,
   AuthRef = proplists:get_value( auth_ref, Config ),
-  clc_v2:update_alert_policy(AuthRef, Spec, Id),
+  ok = clc_v2:update_alert_policy(AuthRef, Spec, Id),
 
   assert:equal(Expected, data_server:get(alert_policies, Id)),
   ok.
@@ -95,7 +95,7 @@ clc_v2_alerts_deletes_expected_policy(Config) ->
   Id = <<"123">>,
 
   AuthRef = proplists:get_value( auth_ref, Config ),
-  clc_v2:delete_alert_policy(AuthRef, Id),
+  ok = clc_v2:delete_alert_policy(AuthRef, Id),
 
   assert:equal(deleted, data_server:get(alert_policies, Id)),
   ok.

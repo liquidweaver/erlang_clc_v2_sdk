@@ -40,7 +40,7 @@ alert_policy(Ref, Id) ->
 create_alert_policy(Ref, Spec) ->
    clc_v2_alert_policies:create(Ref, Spec).
 
--spec update_alert_policy(Ref::clc_v2_auth:auth_ref(), Spec::map, Id::binary()) -> binary().
+-spec update_alert_policy(Ref::clc_v2_auth:auth_ref(), Spec::map, Id::binary()) -> ok.
 update_alert_policy(Ref, Spec, Id) ->
    clc_v2_alert_policies:update(Ref, Spec, Id).
 

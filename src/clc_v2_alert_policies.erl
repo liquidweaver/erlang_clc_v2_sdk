@@ -24,14 +24,16 @@ create( AuthRef, Spec ) ->
   {ok, #{ <<"id">> := Id } } = clc_v2_http_client:post( AuthRef, ["alertPolicies", account_alias ], Spec1 ),
   Id.
 
--spec update( AuthRef::clc_v2_auth:auth_ref(), Spec::map(), Id::binary() ) -> binary().
+-spec update( AuthRef::clc_v2_auth:auth_ref(), Spec::map(), Id::binary() ) -> ok.
 update( AuthRef, Spec, Id ) ->
   Spec1 = to_api_spec(Spec),
-  clc_v2_http_client:put( AuthRef, ["alertPolicies", account_alias, binary_to_list(Id) ], Spec1 ).
+  clc_v2_http_client:put( AuthRef, ["alertPolicies", account_alias, binary_to_list(Id) ], Spec1 ),
+  ok.
 
 -spec delete( AuthRef::clc_v2_auth:auth_ref(), Id::binary() ) -> ok.
 delete( AuthRef, Id ) ->
-  clc_v2_http_client:delete( AuthRef, ["alertPolicies", account_alias, binary_to_list(Id) ] ).
+  clc_v2_http_client:delete( AuthRef, ["alertPolicies", account_alias, binary_to_list(Id) ] ),
+  ok.
 
 to_api_spec( #{ name := Name, email_recipients := Recipients, triggers := Triggers } ) ->
   #{ name => Name,
