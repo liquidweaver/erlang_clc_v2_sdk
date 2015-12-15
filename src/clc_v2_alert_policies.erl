@@ -4,7 +4,8 @@
   get/1,
   get/2,
   create/2,
-  update/3
+  update/3,
+  delete/2
   ]).
 
 -spec get( AuthRef::clc_v2_auth:auth_ref() ) -> map().
@@ -27,6 +28,10 @@ create( AuthRef, Spec ) ->
 update( AuthRef, Spec, Id ) ->
   Spec1 = to_api_spec(Spec),
   clc_v2_http_client:put( AuthRef, ["alertPolicies", account_alias, binary_to_list(Id) ], Spec1 ).
+
+-spec delete( AuthRef::clc_v2_auth:auth_ref(), Id::binary() ) -> ok.
+delete( AuthRef, Id ) ->
+  clc_v2_http_client:delete( AuthRef, ["alertPolicies", account_alias, binary_to_list(Id) ] ).
 
 to_api_spec( #{ name := Name, email_recipients := Recipients, triggers := Triggers } ) ->
   #{ name => Name,

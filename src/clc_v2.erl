@@ -46,4 +46,4 @@ update_alert_policy(Ref, Spec, Id) ->
 
 -spec delete_alert_policy(Ref::clc_v2_auth:auth_ref(), Id::binary()) -> ok.
 delete_alert_policy(Ref, Id) ->
-   ok.
+   clc_v2_alert_policies:delete(Ref, Id).
