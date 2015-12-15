@@ -3,7 +3,8 @@
 -export([
   get/2,
   post/3,
-  put/3
+  put/3,
+  delete/2
   ]).
 
 -define(PAYLOAD_HEADERS(), [ {"Content-Type","application/json"},
@@ -23,6 +24,10 @@ post( AuthRef, Route, Body ) ->
 put( AuthRef, Route, Body ) ->
   send_req( AuthRef, Route, ?PAYLOAD_HEADERS(), put, jiffy:encode(Body)).
 
+-spec delete( AuthRef::clc_v2_auth:auth_ref(), Route::[string() | route_token()] ) -> ok | { error, term() }.
+delete( AuthRef, Route ) ->
+  send_req( AuthRef, Route, [], delete, undefined).
+
 send_req( undefined, Route, Headers, Method, Body ) ->
   Url = build_url(#{}, Route, api_base()),
   send_req1( Url, Headers, Method, Body );
@@ -33,6 +38,9 @@ send_req( AuthRef, Route, Headers, Method, Body ) ->
   Url = build_url( UserInfo, Route, api_base() ),
   send_req1( Url, Headers1, Method, Body ).
 
+send_req1( Url, Headers, delete, _ ) ->
+  {ok, "204", _, ResponseBody} = ibrowse:send_req( Url, Headers, delete ),
+  ok;
 send_req1( Url, Headers, Method, Body ) ->
   {ok, "200", _, ResponseBody} = ibrowse:send_req( Url, Headers, Method, Body ),
   {ok, jiffy:decode( ResponseBody, [return_maps] )}.
