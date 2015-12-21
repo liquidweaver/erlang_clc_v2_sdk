@@ -39,11 +39,15 @@ send_req( AuthRef, Route, Headers, Method, Body ) ->
   send_req1( Url, Headers1, Method, Body ).
 
 send_req1( Url, Headers, delete, _ ) ->
-  {ok, "204", _, ResponseBody} = ibrowse:send_req( Url, Headers, delete ),
-  ok;
+  case ibrowse:send_req( Url, Headers, delete ) of
+    {ok, "204", _, ResponseBody} -> ok;
+    {ok, Code, _, _} -> { error, "unexpected status code: " ++ Code }
+  end;
 send_req1( Url, Headers, Method, Body ) ->
-  {ok, "200", _, ResponseBody} = ibrowse:send_req( Url, Headers, Method, Body ),
-  {ok, jiffy:decode( ResponseBody, [return_maps] )}.
+  case ibrowse:send_req( Url, Headers, Method, Body ) of
+    {ok, "200", _, ResponseBody} -> {ok, jiffy:decode( ResponseBody, [return_maps] )};
+    {ok, Code, _, _} -> { error, "unexpected status code: " ++ Code }
+  end.
 
 build_url(UserInfo, [H | Tail], Acc) when is_list(H)->
   build_url(UserInfo, Tail, Acc ++ "/" ++ H);
