@@ -10,13 +10,11 @@
 
 -spec get( AuthRef::clc_v2_auth:auth_ref() ) -> map().
 get( AuthRef ) ->
-  {ok, Policies}  = clc_v2_http_client:get( AuthRef, ["alertPolicies", account_alias ] ),
-  Policies.
+  clc_v2_http_client:get( AuthRef, ["alertPolicies", account_alias ] ).
 
 -spec get( AuthRef::clc_v2_auth:auth_ref(), Id::binary() ) -> map().
 get( AuthRef, Id ) ->
-  {ok, Policy } = clc_v2_http_client:get( AuthRef, ["alertPolicies", account_alias, binary_to_list(Id) ] ),
-  Policy.
+  clc_v2_http_client:get( AuthRef, ["alertPolicies", account_alias, binary_to_list(Id) ] ).
 
 -spec create( AuthRef::clc_v2_auth:auth_ref(), Spec::map() ) -> binary() | { error, term() }.
 create( AuthRef, Spec ) ->
@@ -24,7 +22,7 @@ create( AuthRef, Spec ) ->
   Response = clc_v2_http_client:post( AuthRef, ["alertPolicies", account_alias ], Spec1 ),
 
   case Response of
-    {ok, #{ <<"id">> := Id } } -> Id;
+    {ok, #{ <<"id">> := Id } } -> { ok, Id };
     Error -> Error
   end.
 

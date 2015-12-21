@@ -4,7 +4,7 @@
   {ok, _} = application:ensure_all_started( clc_v2 ),
   ok = application:set_env(clc_v2, api_base, "http://localhost:8000/v2"),
   {ok, _} = application:ensure_all_started( mock_clc, temporary ),
-  AuthRef = clc_v2:login( <<"mock_user">>, <<"mock_password">>),
+  { ok, AuthRef } = clc_v2:login( <<"mock_user">>, <<"mock_password">>),
   [{ auth_ref, AuthRef } | Config ] ).
 -define( SUITE_TEARDOWN(),
   application:stop( clc_v2 ),

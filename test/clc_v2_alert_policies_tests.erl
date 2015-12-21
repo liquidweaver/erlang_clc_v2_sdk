@@ -7,16 +7,18 @@ setup() ->
   ?meck( clc_v2_http_client, [non_strict]).
 
 get_calls_http_client_get() ->
-  ?stub( clc_v2_http_client, get, 2, { ok, data1 }),
+  Expected = { ok, data1 },
+  ?stub( clc_v2_http_client, get, 2, Expected),
 
-  ?assertEqual( data1, clc_v2_alert_policies:get( auth_ref1 ) ),
+  ?assertEqual( Expected, clc_v2_alert_policies:get( auth_ref1 ) ),
 
   ?called( clc_v2_http_client, get, [auth_ref1, ["alertPolicies", account_alias]] ).
 
 get_id_calls_http_client_get() ->
-  ?stub( clc_v2_http_client, get, 2, { ok, data1 }),
+  Expected = { ok, data1 },
+  ?stub( clc_v2_http_client, get, 2, Expected ),
 
-  ?assertEqual( data1, clc_v2_alert_policies:get( auth_ref1, <<"id1">> ) ),
+  ?assertEqual( Expected, clc_v2_alert_policies:get( auth_ref1, <<"id1">> ) ),
 
   ?called( clc_v2_http_client, get, [auth_ref1, ["alertPolicies", account_alias, "id1"]] ).
 
@@ -54,7 +56,7 @@ create_returns_expected_value() ->
 
   Actual = clc_v2_alert_policies:create( auth_ref1, ?EMPTY_POLICY() ),
 
-  ?assertEqual(Expected, Actual).
+  ?assertEqual({ ok, Expected }, Actual).
 
 create_returns_error_on_error() ->
   Error = { error, "Reason" },

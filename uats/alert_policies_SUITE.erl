@@ -28,7 +28,7 @@ clc_v2_alerts_returns_expected_policies(Config) ->
   Expected = random_policies(),
   data_server:put(alert_policies, Expected),
 
-  Actual = clc_v2:alert_policies(proplists:get_value( auth_ref, Config )),
+  { ok, Actual } = clc_v2:alert_policies(proplists:get_value( auth_ref, Config )),
 
   assert:equal(Expected, Actual),
   ok.
@@ -38,7 +38,7 @@ clc_v2_alerts_returns_a_single_policy(Config) ->
   data_server:put(alert_policies, Id, Expected),
 
   AuthRef = proplists:get_value( auth_ref, Config ),
-  Actual = clc_v2:alert_policy(AuthRef, Id),
+  { ok, Actual } = clc_v2:alert_policy(AuthRef, Id),
 
   assert:equal(Expected, Actual),
   ok.
@@ -63,7 +63,7 @@ clc_v2_alerts_creates_expected_policy(Config) ->
 
 
   AuthRef = proplists:get_value( auth_ref, Config ),
-  Id = clc_v2:create_alert_policy(AuthRef, Spec),
+  { ok, Id } = clc_v2:create_alert_policy(AuthRef, Spec),
 
   assert:equal(Expected, data_server:get(alert_policies, Id)),
   ok.

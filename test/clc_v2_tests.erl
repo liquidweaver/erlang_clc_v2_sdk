@@ -66,9 +66,10 @@ clc_v2_delete_alert_policy_delegates_to_alert_policies_delete() ->
   ?called(clc_v2_alert_policies, delete, [auth_ref1, id1]).
 
 login_creates_new_auth_worker_under_auth_supervisor() ->
+  Expected = { ok, authref1 },
   ?meck( clc_v2_auth_sup, [non_strict] ),
-  ?stub( clc_v2_auth_sup, create_worker, 2, {ok, authref1}),
+  ?stub( clc_v2_auth_sup, create_worker, 2, Expected),
 
-  ?assertEqual( authref1, clc_v2:login( username1, password1 ) ),
+  ?assertEqual( Expected, clc_v2:login( username1, password1 ) ),
 
   ?called( clc_v2_auth_sup, create_worker, [username1, password1] ).
