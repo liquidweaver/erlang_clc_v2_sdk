@@ -95,18 +95,34 @@ update_calls_http_client_post_with_expected_body() ->
                ?capture(clc_v2_http_client, put, 3, 3)).
 
 update_returns_expected_value() ->
-  ?stub( clc_v2_http_client, put, 3, result1 ),
+  ?stub( clc_v2_http_client, put, 3, { ok, result1 }),
 
   Actual = clc_v2_alert_policies:update( auth_ref1, ?EMPTY_POLICY(), <<>> ),
 
   ?assertEqual(ok, Actual).
 
+update_returns_error_on_error() ->
+  Expected = { error, "Reason" },
+  ?stub( clc_v2_http_client, put, 3, Expected ),
+
+  Actual = clc_v2_alert_policies:update( auth_ref1, ?EMPTY_POLICY(), <<>> ),
+
+  ?assertEqual( Expected, Actual ).
+
 delete_returns_expected_value() ->
-  ?stub( clc_v2_http_client, delete, 2, result1 ),
+  ?stub( clc_v2_http_client, delete, 2, { ok, result1 }),
 
   Actual = clc_v2_alert_policies:delete( auth_ref1, <<"id1">>),
 
   ?assertEqual( ok, Actual ).
+
+delete_returns_error_on_error() ->
+  Expected = { error, "Reason" },
+  ?stub( clc_v2_http_client, delete, 2, Expected ),
+
+  Actual = clc_v2_alert_policies:delete( auth_ref1, <<"id1">>),
+
+  ?assertEqual( Expected, Actual ).
 
 delete_calls_http_client_post_with_expected_route() ->
   ?stub( clc_v2_http_client, delete, 2, result1 ),
