@@ -56,6 +56,14 @@ create_returns_expected_value() ->
 
   ?assertEqual(Expected, Actual).
 
+create_returns_error_on_error() ->
+  Error = { error, "Reason" },
+  ?stub( clc_v2_http_client, post, 3, Error),
+
+  Actual = clc_v2_alert_policies:create( auth_ref1, ?EMPTY_POLICY() ),
+
+  ?assertEqual(Error, Actual).
+
 update_calls_http_client_post_with_expected_route() ->
   ?stub( clc_v2_http_client, put, 3, result1 ),
 

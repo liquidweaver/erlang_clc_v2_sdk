@@ -18,11 +18,15 @@ get( AuthRef, Id ) ->
   {ok, Policy } = clc_v2_http_client:get( AuthRef, ["alertPolicies", account_alias, binary_to_list(Id) ] ),
   Policy.
 
--spec create( AuthRef::clc_v2_auth:auth_ref(), Spec::map() ) -> binary().
+-spec create( AuthRef::clc_v2_auth:auth_ref(), Spec::map() ) -> binary() | { error, term() }.
 create( AuthRef, Spec ) ->
   Spec1 = to_api_spec(Spec),
-  {ok, #{ <<"id">> := Id } } = clc_v2_http_client:post( AuthRef, ["alertPolicies", account_alias ], Spec1 ),
-  Id.
+  Response = clc_v2_http_client:post( AuthRef, ["alertPolicies", account_alias ], Spec1 ),
+
+  case Response of
+    {ok, #{ <<"id">> := Id } } -> Id;
+    Error -> Error
+  end.
 
 -spec update( AuthRef::clc_v2_auth:auth_ref(), Spec::map(), Id::binary() ) -> ok.
 update( AuthRef, Spec, Id ) ->
