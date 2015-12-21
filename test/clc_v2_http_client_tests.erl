@@ -160,35 +160,35 @@ put_returns_error_on_not2xx() ->
   ?assertMatch({ error, "unexpected status code: not2xx" }, clc_v2_http_client:put( auth_ref1, ["route1"], #{})).
 
 delete_appends_multiple_route_directories_to_api_base_and_posts() ->
-  ?stub( ibrowse, send_req, 3, {ok, "204", [], ignored1} ),
+  ?stub( ibrowse, send_req, 4, {ok, "204", [], ignored1} ),
 
   clc_v2_http_client:delete( auth_ref1, ["route1", "route2"] ),
 
-  ?called( ibrowse, send_req, ["http://api.base/route1/route2", ?any, delete] ).
+  ?called( ibrowse, send_req, ["http://api.base/route1/route2", ?any, delete, []] ).
 
 delete_calls_authentication_lens_to_resolve_atom_route_directories() ->
-  ?stub( ibrowse, send_req, 3, {ok, "204", [], ignored1} ),
+  ?stub( ibrowse, send_req, 4, {ok, "204", [], ignored1} ),
 
   clc_v2_http_client:delete( auth_ref1, ["route1", route_lens, "route3"] ),
 
   ?called( clc_v2_authentication, route_lens, [user_info1] ),
-  ?called( ibrowse, send_req, ["http://api.base/route1/lens_result1/route3", ?any, delete ] ).
+  ?called( ibrowse, send_req, ["http://api.base/route1/lens_result1/route3", ?any, delete, [] ] ).
 
 delete_sends_authorization_header() ->
-  ?stub( ibrowse, send_req, 3, {ok, "204", [], ignored1} ),
+  ?stub( ibrowse, send_req, 4, {ok, "204", [], ignored1} ),
 
   clc_v2_http_client:delete( auth_ref1, ["route1"] ),
 
   ?called( clc_v2_authentication, bearer_token, [user_info1] ),
-  Headers = ?capture( ibrowse, send_req, 3, 2 ),
+  Headers = ?capture( ibrowse, send_req, 4, 2 ),
   ?assert(lists:member( {"Authorization", "Bearer LONG_BEARER_TOKEN"}, Headers )).
 
 delete_returns_ok_on_success() ->
-  ?stub( ibrowse, send_req, 3, {ok, "204", [], ignored1} ),
+  ?stub( ibrowse, send_req, 4, {ok, "204", [], ignored1} ),
 
   ?assertEqual( ok, clc_v2_http_client:delete(auth_ref1, ["route1"]) ).
 
 delete_returns_error_on_not2xx() ->
-  ?stub( ibrowse, send_req, 3, {ok, "not2xx", [], <<>> }),
+  ?stub( ibrowse, send_req, 4, {ok, "not2xx", [], <<>> }),
 
   ?assertMatch({ error, "unexpected status code: not2xx" }, clc_v2_http_client:delete( auth_ref1, ["route1"])).

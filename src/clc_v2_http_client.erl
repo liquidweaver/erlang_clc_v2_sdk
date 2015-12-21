@@ -26,7 +26,7 @@ put( AuthRef, Route, Body ) ->
 
 -spec delete( AuthRef::clc_v2_auth:auth_ref(), Route::[string() | route_token()] ) -> ok | { error, term() }.
 delete( AuthRef, Route ) ->
-  send_req( AuthRef, Route, [], delete, undefined).
+  send_req( AuthRef, Route, [], delete, []).
 
 send_req( undefined, Route, Headers, Method, Body ) ->
   Url = build_url(#{}, Route, api_base()),
@@ -38,13 +38,9 @@ send_req( AuthRef, Route, Headers, Method, Body ) ->
   Url = build_url( UserInfo, Route, api_base() ),
   send_req1( Url, Headers1, Method, Body ).
 
-send_req1( Url, Headers, delete, _ ) ->
-  case ibrowse:send_req( Url, Headers, delete ) of
-    {ok, "204", _, ResponseBody} -> ok;
-    {ok, Code, _, _} -> { error, "unexpected status code: " ++ Code }
-  end;
 send_req1( Url, Headers, Method, Body ) ->
   case ibrowse:send_req( Url, Headers, Method, Body ) of
+    {ok, "204", _, _} -> ok;
     {ok, "200", _, ResponseBody} -> {ok, jiffy:decode( ResponseBody, [return_maps] )};
     {ok, Code, _, _} -> { error, "unexpected status code: " ++ Code }
   end.
