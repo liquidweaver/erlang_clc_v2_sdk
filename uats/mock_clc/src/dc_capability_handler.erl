@@ -40,6 +40,6 @@ unsupported(Req, State) ->
 
 get(Req, State) ->
   Id = element(1, cowboy_req:binding(id, Req)),
-  ResponseBody = data_server:get(datacenter_capabilities, Id),
+  ResponseBody = data_server:get(datacenter_deployment_capabilities, Id),
   {ok, Response} = cowboy_req:reply(200, [], jiffy:encode(ResponseBody), Req),
   {ok, Response, State}.

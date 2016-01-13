@@ -3,11 +3,11 @@
 -export([all/0, suite/0, end_per_testcase/1, init_per_suite/1, end_per_suite/1]).
 -export([clc_v2_datacenters_returns_expected_datacenters/1,
          clc_v2_datacenter_returns_a_single_datacenter/1,
-         clc_v2_datacenter_capabilities_returns_capabilites_for_a_datacenter/1]).
+         clc_v2_datacenter_deployment_capabilities_returns_capabilites_for_a_datacenter/1]).
 
 all() -> [clc_v2_datacenters_returns_expected_datacenters,
           clc_v2_datacenter_returns_a_single_datacenter,
-          clc_v2_datacenter_capabilities_returns_capabilites_for_a_datacenter].
+          clc_v2_datacenter_deployment_capabilities_returns_capabilites_for_a_datacenter].
 suite() ->
       [{timetrap,{minutes,1}}].
 
@@ -40,13 +40,13 @@ clc_v2_datacenter_returns_a_single_datacenter(Config) ->
   assert:equal(Expected, Actual),
   ok.
 
-clc_v2_datacenter_capabilities_returns_capabilites_for_a_datacenter(Config) ->
+clc_v2_datacenter_deployment_capabilities_returns_capabilites_for_a_datacenter(Config) ->
   Datacenter = <<"dc1">>,
-  Expected = random_capabilities(),
-  data_server:put(datacenter_capabilities, Datacenter, Expected),
+  Expected = random_deployment_capabilities(),
+  data_server:put(datacenter_deployment_capabilities, Datacenter, Expected),
 
   AuthRef = proplists:get_value( auth_ref, Config ),
-  { ok, Actual } = clc_v2:datacenter_capabilities(AuthRef, Datacenter),
+  { ok, Actual } = clc_v2:datacenter_deployment_capabilities(AuthRef, Datacenter),
 
   assert:equal(Expected, Actual),
   ok.
@@ -78,7 +78,7 @@ random_datacenter() ->
           <<"verbs">> => ["GET"] }]
    }.
 
-random_capabilities() ->
+random_deployment_capabilities() ->
   #{ <<"dataCenterEnabled">> => true,
      <<"importVMEnabled">> => true,
      <<"supportsPremiumStorage">> => true,
