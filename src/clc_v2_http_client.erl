@@ -42,7 +42,8 @@ send_req1( Url, Headers, Method, Body ) ->
   case ibrowse:send_req( Url, Headers, Method, Body ) of
     {ok, "204", _, _} -> ok;
     {ok, "200", _, ResponseBody} -> {ok, jiffy:decode( ResponseBody, [return_maps] )};
-    {ok, Code, _, _} -> { error, "unexpected status code: " ++ Code }
+    {ok, Code, _, ResponseBody} ->
+      { error, <<"unexpected status (", (list_to_binary(Code))/binary, ") - ", ResponseBody/binary>> }
   end.
 
 build_url(UserInfo, [H | Tail], Acc) when is_list(H)->
