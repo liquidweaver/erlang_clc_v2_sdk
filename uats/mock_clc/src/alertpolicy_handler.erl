@@ -53,16 +53,16 @@ read(Req, State) ->
   {jiffy:encode(Response), Req, State}.
 
 write(Req, State) ->
-  Id = case cowboy_req:method(Req) of
-         {<<"POST">>, _} -> integer_to_binary(element(3, now()));
-         _ -> element(1, cowboy_req:binding(id, Req))
-       end,
+  {SuccessCode, Id} = case cowboy_req:method(Req) of
+                       {<<"POST">>, _} -> {201, integer_to_binary(element(3, now()))};
+                       _ -> {200, element(1, cowboy_req:binding(id, Req))}
+                      end,
   {ok, Body, _} = cowboy_req:body(Req),
   Spec = jiffy:decode(Body, [return_maps]),
 
   data_server:put(alert_policies, Id, Spec),
 
-  {ok, Response} = cowboy_req:reply(200, [], jiffy:encode(#{<<"id">> => Id}), Req),
+  {ok, Response} = cowboy_req:reply(SuccessCode, [], jiffy:encode(#{<<"id">> => Id}), Req),
   {ok, Response, State}.
 
 delete_resource(Req, State) ->

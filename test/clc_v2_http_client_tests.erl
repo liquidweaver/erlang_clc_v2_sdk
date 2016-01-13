@@ -107,6 +107,12 @@ post_decodes_response_body() ->
 
   ?assertMatch({ok, #{ <<"key1">> := <<"value1">> }}, clc_v2_http_client:post( auth_ref1, ["route1"], #{})).
 
+post_allows_for_response_of_created() ->
+  ResponseBody = <<"{\"key1\":\"value1\"}">>,
+  ?stub( ibrowse, send_req, 4, {ok, "201", [], ResponseBody }),
+
+  ?assertMatch({ok, #{ <<"key1">> := <<"value1">> }}, clc_v2_http_client:post( auth_ref1, ["route1"], #{})).
+
 post_returns_error_on_not2xx() ->
   ?stub( ibrowse, send_req, 4, {ok, "not2xx", [], <<>> }),
 
