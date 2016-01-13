@@ -3,11 +3,13 @@
 -export([all/0, suite/0, end_per_testcase/1, init_per_suite/1, end_per_suite/1]).
 -export([clc_v2_datacenters_returns_expected_datacenters/1,
          clc_v2_datacenter_returns_a_single_datacenter/1,
-         clc_v2_datacenter_deployment_capabilities_returns_capabilites_for_a_datacenter/1]).
+         clc_v2_datacenter_deployment_capabilities_returns_capabilites_for_a_datacenter/1,
+         clc_v2_datacenter_baremetal_capabilities_returns_capabilites_for_a_datacenter/1]).
 
 all() -> [clc_v2_datacenters_returns_expected_datacenters,
           clc_v2_datacenter_returns_a_single_datacenter,
-          clc_v2_datacenter_deployment_capabilities_returns_capabilites_for_a_datacenter].
+          clc_v2_datacenter_deployment_capabilities_returns_capabilites_for_a_datacenter,
+          clc_v2_datacenter_baremetal_capabilities_returns_capabilites_for_a_datacenter].
 suite() ->
       [{timetrap,{minutes,1}}].
 
@@ -42,11 +44,22 @@ clc_v2_datacenter_returns_a_single_datacenter(Config) ->
 
 clc_v2_datacenter_deployment_capabilities_returns_capabilites_for_a_datacenter(Config) ->
   Datacenter = <<"dc1">>,
-  Expected = random_deployment_capabilities(),
+  Expected = deployment_capabilities(),
   data_server:put(datacenter_deployment_capabilities, Datacenter, Expected),
 
   AuthRef = proplists:get_value( auth_ref, Config ),
   { ok, Actual } = clc_v2:datacenter_deployment_capabilities(AuthRef, Datacenter),
+
+  assert:equal(Expected, Actual),
+  ok.
+
+clc_v2_datacenter_baremetal_capabilities_returns_capabilites_for_a_datacenter(Config) ->
+  Datacenter = <<"dc1">>,
+  Expected = baremetal_capabilities(),
+  data_server:put(datacenter_baremetal_capabilities, Datacenter, Expected),
+
+  AuthRef = proplists:get_value( auth_ref, Config ),
+  { ok, Actual } = clc_v2:datacenter_baremetal_capabilities(AuthRef, Datacenter),
 
   assert:equal(Expected, Actual),
   ok.
@@ -78,7 +91,7 @@ random_datacenter() ->
           <<"verbs">> => ["GET"] }]
    }.
 
-random_deployment_capabilities() ->
+deployment_capabilities() ->
   #{ <<"dataCenterEnabled">> => true,
      <<"importVMEnabled">> => true,
      <<"supportsPremiumStorage">> => true,
@@ -111,3 +124,45 @@ random_deployment_capabilities() ->
           <<"reservedDrivePaths">> => ["bin", "boot", "dev"] }
       ]
    }.
+
+baremetal_capabilities() ->
+	#{<<"skus">> =>
+		[	#{<<"id">> => <<"529e2592a3e640a7c2617b5e8bc8feaed95eab22">>,
+				<<"hourlyRate">> => 0.56,
+				<<"availability">> => <<"high">>,
+				<<"memory">> => [#{ <<"capacityGB">> => 16 }],
+				<<"processor">> =>
+					#{	<<"coresPerSocket">> => 4,
+							<<"description">> => <<"Intel(R) Xeon(R) CPU E3-1271 v3 @ 3.60GHz">>,
+							<<"sockets">> => 1 },
+				<<"storage">> =>
+					[	#{<<"capacityGB">> => 1000,
+							<<"speedRpm">> => 7200,
+							<<"type">> => <<"Hdd">> } ]
+			},
+			#{<<"id">> => <<"f24b18ba2ce23657657444601649c7b8b7f9b60c">>,
+				<<"hourlyRate">> => 1.65,
+				<<"availability">> => <<"none">>,
+				<<"memory">> => [#{ <<"capacityGB">> =>  64 }],
+				<<"processor">> =>
+					#{	<<"coresPerSocket">> => 6,
+							<<"description">> => <<"Intel(R) Xeon(R) CPU E5-2620 v3 @ 2.40GHz">>,
+							<<"sockets">> => 2 },
+				<<"storage">> =>
+					[	#{<<"capacityGB">> => 2000,
+							<<"speedRpm">> => 7200,
+							<<"type">> => <<"Hdd">>	},
+						#{<<"capacityGB">> => 2000,
+							<<"speedRpm">> => 7200,
+							<<"type">> => <<"Hdd">>	}	]
+			}
+		],
+	<<"operatingSystems">> =>
+		[	#{<<"type">> => <<"centOS6_64Bit">>,
+				<<"description">> => <<"CentOS 6 64-bit">>,
+				<<"hourlyRatePerSocket">> => 0	},
+			#{<<"type">> => <<"redHat6_64Bit">>,
+				<<"description">> => <<"RedHat Enterprise Linux 6 64-bit">>,
+				<<"hourlyRatePerSocket">> => 0.075	}
+		]
+	}.

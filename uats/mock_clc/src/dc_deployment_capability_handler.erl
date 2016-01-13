@@ -1,5 +1,5 @@
 -include("data.hrl").
--module(dc_capability_handler).
+-module(dc_deployment_capability_handler).
 
 -export([init/3,
          rest_init/2,
