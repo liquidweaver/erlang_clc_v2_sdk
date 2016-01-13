@@ -4,13 +4,16 @@
   datacenters/1,
   datacenter/2,
   datacenter_capabilities/2,
-  alert_policies/1
+  alert_policies/1,
+  alert_policy/2,
+  create_alert_policy/2,
+  update_alert_policy/3,
+  delete_alert_policy/2
   ] ).
 
 -spec login( Username::binary(), Password::binary() ) -> clc_v2_auth:auth_ref().
 login( Username, Password ) ->
-  { ok, AuthRef } = clc_v2_auth_sup:create_worker( Username, Password ),
-  AuthRef.
+  clc_v2_auth_sup:create_worker( Username, Password ).
 
 -spec datacenters(Ref::clc_v2_auth:auth_ref()) -> map().
 datacenters(Ref) ->
@@ -27,3 +30,19 @@ datacenter_capabilities(Ref, Datacenter) ->
 -spec alert_policies(Ref::clc_v2_auth:auth_ref()) -> map().
 alert_policies(Ref) ->
    clc_v2_alert_policies:get(Ref).
+
+-spec alert_policy(Ref::clc_v2_auth:auth_ref(), Id::binary()) -> map().
+alert_policy(Ref, Id) ->
+   clc_v2_alert_policies:get(Ref, Id).
+
+-spec create_alert_policy(Ref::clc_v2_auth:auth_ref(), Spec::map) -> binary().
+create_alert_policy(Ref, Spec) ->
+   clc_v2_alert_policies:create(Ref, Spec).
+
+-spec update_alert_policy(Ref::clc_v2_auth:auth_ref(), Spec::map, Id::binary()) -> ok.
+update_alert_policy(Ref, Spec, Id) ->
+   clc_v2_alert_policies:update(Ref, Spec, Id).
+
+-spec delete_alert_policy(Ref::clc_v2_auth:auth_ref(), Id::binary()) -> ok.
+delete_alert_policy(Ref, Id) ->
+   clc_v2_alert_policies:delete(Ref, Id).

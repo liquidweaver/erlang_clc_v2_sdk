@@ -25,7 +25,7 @@ clc_v2_datacenters_returns_expected_datacenters(Config) ->
   data_server:put(datacenters, Expected),
 
   AuthRef = proplists:get_value( auth_ref, Config ),
-  Actual = clc_v2:datacenters(AuthRef),
+  { ok, Actual } = clc_v2:datacenters(AuthRef),
 
   assert:equal(Expected, Actual),
   ok.
@@ -35,7 +35,7 @@ clc_v2_datacenter_returns_a_single_datacenter(Config) ->
   data_server:put(datacenters, Id, Expected),
 
   AuthRef = proplists:get_value( auth_ref, Config ),
-  Actual = clc_v2:datacenter(AuthRef, Id),
+  { ok, Actual } = clc_v2:datacenter(AuthRef, Id),
 
   assert:equal(Expected, Actual),
   ok.
@@ -46,7 +46,7 @@ clc_v2_datacenter_capabilities_returns_capabilites_for_a_datacenter(Config) ->
   data_server:put(datacenter_capabilities, Datacenter, Expected),
 
   AuthRef = proplists:get_value( auth_ref, Config ),
-  Actual = clc_v2:datacenter_capabilities(AuthRef, Datacenter),
+  { ok, Actual } = clc_v2:datacenter_capabilities(AuthRef, Datacenter),
 
   assert:equal(Expected, Actual),
   ok.

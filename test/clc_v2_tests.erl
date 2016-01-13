@@ -33,10 +33,43 @@ clc_v2_alert_policies_delegates_to_alert_policies_get() ->
 
   ?called(clc_v2_alert_policies, get, [auth_ref1]).
 
-login_creates_new_auth_worker_under_auth_supervisor() ->
-  ?meck( clc_v2_auth_sup, [non_strict] ),
-  ?stub( clc_v2_auth_sup, create_worker, 2, {ok, authref1}),
+clc_v2_alert_policy_delegates_to_alert_policies_get() ->
+  ?meck(clc_v2_alert_policies, [non_strict]),
+  ?stub(clc_v2_alert_policies, get, 2, alert_policy1),
 
-  ?assertEqual( authref1, clc_v2:login( username1, password1 ) ),
+  ?assertEqual(alert_policy1, clc_v2:alert_policy(auth_ref1, id1)),
+
+  ?called(clc_v2_alert_policies, get, [auth_ref1, id1]).
+
+clc_v2_create_alert_policy_delegates_to_alert_policies_create() ->
+  ?meck(clc_v2_alert_policies, [non_strict]),
+  ?stub(clc_v2_alert_policies, create, 2, id1),
+
+  ?assertEqual(id1, clc_v2:create_alert_policy(auth_ref1, spec1)),
+
+  ?called(clc_v2_alert_policies, create, [auth_ref1, spec1]).
+
+clc_v2_update_alert_policy_delegates_to_alert_policies_update() ->
+  ?meck(clc_v2_alert_policies, [non_strict]),
+  ?stub(clc_v2_alert_policies, update, 3, result1),
+
+  ?assertEqual(result1, clc_v2:update_alert_policy(auth_ref1, spec1, id1)),
+
+  ?called(clc_v2_alert_policies, update, [auth_ref1, spec1, id1]).
+
+clc_v2_delete_alert_policy_delegates_to_alert_policies_delete() ->
+  ?meck(clc_v2_alert_policies, [non_strict]),
+  ?stub(clc_v2_alert_policies, delete, 2, result1),
+
+  ?assertEqual(result1, clc_v2:delete_alert_policy(auth_ref1, id1)),
+
+  ?called(clc_v2_alert_policies, delete, [auth_ref1, id1]).
+
+login_creates_new_auth_worker_under_auth_supervisor() ->
+  Expected = { ok, authref1 },
+  ?meck( clc_v2_auth_sup, [non_strict] ),
+  ?stub( clc_v2_auth_sup, create_worker, 2, Expected),
+
+  ?assertEqual( Expected, clc_v2:login( username1, password1 ) ),
 
   ?called( clc_v2_auth_sup, create_worker, [username1, password1] ).
