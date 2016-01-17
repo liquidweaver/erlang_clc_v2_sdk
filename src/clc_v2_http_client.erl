@@ -44,7 +44,9 @@ send_req1( Url, Headers, Method, Body ) ->
     {ok, "200", _, ResponseBody} -> {ok, parse_json(ResponseBody)};
     {ok, "201", _, ResponseBody} -> {ok, parse_json(ResponseBody)};
     {ok, Code, _, ResponseBody} ->
-      { error, <<"unexpected status (", (list_to_binary(Code))/binary, ") - ", ResponseBody/binary>> }
+      BinCode = list_to_binary(Code),
+      BinBody = list_to_binary(ResponseBody),
+      { error, <<"unexpected status (", BinCode/binary, ") - ", BinBody/binary>> }
   end.
 
 build_url(UserInfo, [H | Tail], Acc) when is_list(H)->
