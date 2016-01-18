@@ -65,13 +65,12 @@ clc_v2_datacenter_baremetal_capabilities_returns_capabilites_for_a_datacenter(Co
   ok.
 
 random_datacenter() ->
-  {Float, Bin} = ?RANDOMS(),
-  Id = <<"id", Bin/binary>>,
+  Id = <<"id", (?RBIN())/binary>>,
   LinkSuffix = <<"Alias/", Id/binary>>,
   Link = <<"/v2/datacenters/", LinkSuffix/binary>>,
 
   #{ <<"id">> => Id,
-     <<"name">> => <<"name", Bin/binary>>,
+     <<"name">> => <<"name", (?RBIN())/binary>>,
      <<"links">> =>
       [#{ <<"href">> => Link,
           <<"ref">> => <<"self">> },
@@ -94,32 +93,32 @@ random_datacenter() ->
 deployment_capabilities() ->
   #{ <<"dataCenterEnabled">> => true,
      <<"importVMEnabled">> => true,
-     <<"supportsPremiumStorage">> => true,
+     <<"supportsPremiumStorage">> => false,
      <<"supportsSharedLoadBalancer">> => true,
      <<"supportsBareMetalServers">> => true,
      <<"deployableNetworks">> => [],
      <<"importableOSTypes">> =>
-      [#{ <<"id">> => 123,
+      [#{ <<"id">> => ?RINT(),
          <<"description">> => <<"123">>,
          <<"labProductCode">> => <<"LPC123">>,
          <<"premiumProductCode">> => <<"PPC123">>,
          <<"type">> => <<"OSA_BBit">> },
-       #{ <<"id">> => 456,
+       #{ <<"id">> => ?RINT(),
          <<"description">> => <<"456">>,
          <<"labProductCode">> => <<"LPC456">>,
          <<"premiumProductCode">> => <<"PPC456">>,
          <<"type">> => <<"OSC_DBit">> }],
     <<"templates">> =>
-      [#{ <<"name">> => <<"Template1">>,
+      [#{ <<"name">> => ?RBIN(),
           <<"osType">> => <<"OSA_BBit">>,
           <<"description">> => <<"Template1 Description">>,
-          <<"storageSizeGB">> => 0,
+          <<"storageSizeGB">> => ?RINT(),
           <<"capabilities">> => [<<"cpuAutoscale">>],
           <<"reservedDrivePaths">> => ["bin", "boot", "dev"] },
-      #{ <<"name">> => <<"Template2">>,
+      #{ <<"name">> => ?RBIN(),
           <<"osType">> => <<"OSC_DBit">>,
           <<"description">> => <<"Template2 Description">>,
-          <<"storageSizeGB">> => 0,
+          <<"storageSizeGB">> => ?RINT(),
           <<"capabilities">> => [<<"cpuAutoscale">>],
           <<"reservedDrivePaths">> => ["bin", "boot", "dev"] }
       ]
