@@ -9,7 +9,12 @@
   alert_policy/2,
   create_alert_policy/2,
   update_alert_policy/3,
-  delete_alert_policy/2
+  delete_alert_policy/2,
+  antiaffinity_policies/1,
+  antiaffinity_policy/2,
+  create_antiaffinity_policy/2,
+  update_antiaffinity_policy/3,
+  delete_antiaffinity_policy/2
   ] ).
 
 -spec login( Username::binary(), Password::binary() ) -> clc_v2_auth:auth_ref().
@@ -51,3 +56,23 @@ update_alert_policy(Ref, Spec, Id) ->
 -spec delete_alert_policy(Ref::clc_v2_auth:auth_ref(), Id::binary()) -> ok.
 delete_alert_policy(Ref, Id) ->
    clc_v2_alert_policies:delete(Ref, Id).
+
+-spec antiaffinity_policies(Ref::clc_v2_auth:auth_ref()) -> map().
+antiaffinity_policies(Ref) ->
+   clc_v2_antiaffinity_policies:get(Ref).
+
+-spec antiaffinity_policy(Ref::clc_v2_auth:auth_ref(), Id::binary()) -> map().
+antiaffinity_policy(Ref, Id) ->
+   clc_v2_antiaffinity_policies:get(Ref, Id).
+
+-spec create_antiaffinity_policy(Ref::clc_v2_auth:auth_ref(), Spec::map) -> binary().
+create_antiaffinity_policy(Ref, Spec) ->
+   clc_v2_antiaffinity_policies:create(Ref, Spec).
+
+-spec update_antiaffinity_policy(Ref::clc_v2_auth:auth_ref(), Spec::map, Id::binary()) -> ok.
+update_antiaffinity_policy(Ref, Spec, Id) ->
+   clc_v2_antiaffinity_policies:update(Ref, Spec, Id).
+
+-spec delete_antiaffinity_policy(Ref::clc_v2_auth:auth_ref(), Id::binary()) -> ok.
+delete_antiaffinity_policy(Ref, Id) ->
+   clc_v2_antiaffinity_policies:delete(Ref, Id).
