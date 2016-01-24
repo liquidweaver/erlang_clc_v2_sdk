@@ -43,15 +43,15 @@ clc_v2_autoscale_returns_a_single_policy(Config) ->
   assert:equal(Expected, Actual),
   ok.
 
-clc_v2_server_autoscale_returns_a_single_policy(Config) ->
+clc_v2_server_autoscale_returns_server_policy(Config) ->
 	ServerId = ?RBIN(),
-  Expected = #{<<"id">> := PolicyId} = random_policy(),
+  Expected = random_policy(),
   data_server:put(server_autoscale_policies, ServerId, Expected),
 
   AuthRef = proplists:get_value( auth_ref, Config ),
   { ok, Actual } = clc_v2:server_autoscale_policy(AuthRef, ServerId),
 
-  assert:equal(PolicyId, Actual),
+  assert:equal(Expected, Actual),
   ok.
 
 clc_v2_server_autoscale_updates_expected_policy(Config) ->
