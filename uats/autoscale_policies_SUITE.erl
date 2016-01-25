@@ -3,14 +3,14 @@
 -export([all/0, suite/0, init_per_suite/1, end_per_suite/1]).
 -export([clc_v2_autoscale_returns_expected_policies/1,
          clc_v2_autoscale_returns_a_single_policy/1,
-         clc_v2_server_autoscale_returns_a_single_policy/1,
+         clc_v2_server_autoscale_returns_server_policy/1,
          clc_v2_server_autoscale_updates_expected_policy/1,
          clc_v2_server_autoscale_removes_expected_policy/1
         ]).
 
 all() -> [clc_v2_autoscale_returns_expected_policies,
          clc_v2_autoscale_returns_a_single_policy,
-         clc_v2_server_autoscale_returns_a_single_policy,
+         clc_v2_server_autoscale_returns_server_policy,
          clc_v2_server_autoscale_updates_expected_policy,
          clc_v2_server_autoscale_removes_expected_policy
         ].
@@ -45,7 +45,7 @@ clc_v2_autoscale_returns_a_single_policy(Config) ->
 
 clc_v2_server_autoscale_returns_server_policy(Config) ->
 	ServerId = ?RBIN(),
-  Expected = random_policy(),
+  Expected = server_policy(),
   data_server:put(server_autoscale_policies, ServerId, Expected),
 
   AuthRef = proplists:get_value( auth_ref, Config ),
@@ -66,17 +66,16 @@ clc_v2_server_autoscale_updates_expected_policy(Config) ->
 
 clc_v2_server_autoscale_removes_expected_policy(Config) ->
 	ServerId = ?RBIN(),
-	Expected = #{ <<"id">> := PolicyId } = #{ <<"id">> => ?RBIN() },
+	PolicyId = ?RBIN(),
 
   AuthRef = proplists:get_value( auth_ref, Config ),
-  ok = clc_v2:update_server_autoscale_policy(AuthRef, ServerId, PolicyId),
+  ok = clc_v2:remove_server_autoscale_policy(AuthRef, ServerId),
 
 	assert:equal(deleted, data_server:get(server_autoscale_policies, ServerId)),
   ok.
 
 random_policies() ->
-  Items = [random_policy(),
-           random_policy()].
+  [random_policy(), random_policy()].
 
 random_policy() ->
 	#{<<"id">> => ?RBIN(),

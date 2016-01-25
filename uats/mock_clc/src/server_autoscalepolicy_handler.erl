@@ -63,7 +63,7 @@ write(Req, State) ->
   {ok, Response, State}.
 
 delete_resource(Req, State) ->
-  ServerId = element(1, cowboy_req:binding(id, Req)),
+  ServerId = element(1, cowboy_req:binding(server_id, Req)),
 
   data_server:put(server_autoscale_policies, ServerId, deleted),
 
