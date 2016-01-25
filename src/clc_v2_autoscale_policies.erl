@@ -1,4 +1,5 @@
 -module( clc_v2_autoscale_policies ).
+-include("macros.hrl").
 
 -export([
   get/1,
@@ -24,18 +25,12 @@ get_server_policy( AuthRef, ServerId ) ->
 update_server_policy( AuthRef, ServerId, PolicyId ) ->
   Payload = #{ id => PolicyId },
   Response = clc_v2_http_client:put( AuthRef, server_policy_route(ServerId), Payload ),
-  case Response of
-    { ok, _ } -> ok;
-    Error -> Error
-  end.
+  ?OK_OR_ERROR( Response ).
 
 -spec remove_server_policy( AuthRef::clc_v2_auth:auth_ref(), ServerId::binary() ) -> ok.
 remove_server_policy( AuthRef, ServerId ) ->
   Response = clc_v2_http_client:delete( AuthRef, server_policy_route(ServerId) ),
-  case Response of
-    { ok, _ } -> ok;
-    Error -> Error
-  end.
+  ?OK_OR_ERROR( Response ).
 
 server_policy_route(ServerId) ->
   ["servers", account_alias, binary_to_list(ServerId), "cpuAutoscalePolicy" ].
