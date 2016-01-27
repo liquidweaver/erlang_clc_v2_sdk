@@ -110,28 +110,27 @@ random_policies() ->
                        <<"verbs">> => ["GET","POST"] } }.
 
 random_policy() ->
-  {Float, Bin} = ?RANDOMS(),
-  Id = <<"id", Bin/binary>>,
+  Id = <<"id", (?RBIN())/binary>>,
 
   #{ <<"id">> => Id,
-     <<"name">> => <<"name", Bin/binary>>,
+     <<"name">> => <<"name", (?RBIN())/binary>>,
      <<"actions">> =>
       [ #{
           <<"action">> => <<"email">>,
           <<"settings">> =>
-            #{ <<"receipients">> => [<<"user", Bin/binary, "@domain.com">>,
-                                     <<"user@domain", Bin/binary, ".com">>] }
+            #{ <<"receipients">> => [<<"user", (?RBIN())/binary, "@domain.com">>,
+                                     <<"user@domain", (?RBIN())/binary, ".com">>] }
         }],
      <<"triggers">> =>
       [#{
           <<"metric">> => <<"cpu">>,
           <<"duration">> => "12:34:56",
-          <<"threshold">> => Float
+          <<"threshold">> => ?RFLOAT()
         },
        #{
           <<"metric">> => <<"disk">>,
           <<"duration">> => "01:23:45",
-          <<"threshold">> => Float
+          <<"threshold">> => ?RFLOAT()
         }],
       <<"links">> =>
        #{

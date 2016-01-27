@@ -73,6 +73,46 @@ clc_v2_delete_alert_policy_delegates_to_alert_policies_delete() ->
 
   ?called(clc_v2_alert_policies, delete, [auth_ref1, id1]).
 
+clc_v2_antiaffinity_policies_delegates_to_antiaffinity_policies_get() ->
+  ?meck(clc_v2_antiaffinity_policies, [non_strict]),
+  ?stub(clc_v2_antiaffinity_policies, get, 1, antiaffinity_policies1),
+
+  ?assertEqual(antiaffinity_policies1, clc_v2:antiaffinity_policies(auth_ref1)),
+
+  ?called(clc_v2_antiaffinity_policies, get, [auth_ref1]).
+
+clc_v2_antiaffinity_policy_delegates_to_antiaffinity_policies_get() ->
+  ?meck(clc_v2_antiaffinity_policies, [non_strict]),
+  ?stub(clc_v2_antiaffinity_policies, get, 2, antiaffinity_policy1),
+
+  ?assertEqual(antiaffinity_policy1, clc_v2:antiaffinity_policy(auth_ref1, id1)),
+
+  ?called(clc_v2_antiaffinity_policies, get, [auth_ref1, id1]).
+
+clc_v2_create_antiaffinity_policy_delegates_to_antiaffinity_policies_create() ->
+  ?meck(clc_v2_antiaffinity_policies, [non_strict]),
+  ?stub(clc_v2_antiaffinity_policies, create, 2, id1),
+
+  ?assertEqual(id1, clc_v2:create_antiaffinity_policy(auth_ref1, spec1)),
+
+  ?called(clc_v2_antiaffinity_policies, create, [auth_ref1, spec1]).
+
+clc_v2_update_antiaffinity_policy_delegates_to_antiaffinity_policies_update() ->
+  ?meck(clc_v2_antiaffinity_policies, [non_strict]),
+  ?stub(clc_v2_antiaffinity_policies, update, 3, result1),
+
+  ?assertEqual(result1, clc_v2:update_antiaffinity_policy(auth_ref1, spec1, id1)),
+
+  ?called(clc_v2_antiaffinity_policies, update, [auth_ref1, spec1, id1]).
+
+clc_v2_delete_antiaffinity_policy_delegates_to_antiaffinity_policies_delete() ->
+  ?meck(clc_v2_antiaffinity_policies, [non_strict]),
+  ?stub(clc_v2_antiaffinity_policies, delete, 2, result1),
+
+  ?assertEqual(result1, clc_v2:delete_antiaffinity_policy(auth_ref1, id1)),
+
+  ?called(clc_v2_antiaffinity_policies, delete, [auth_ref1, id1]).
+
 login_creates_new_auth_worker_under_auth_supervisor() ->
   Expected = { ok, authref1 },
   ?meck( clc_v2_auth_sup, [non_strict] ),

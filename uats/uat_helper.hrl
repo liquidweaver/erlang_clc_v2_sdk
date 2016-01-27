@@ -1,6 +1,8 @@
 -include_lib("common_test/include/ct.hrl").
 
 -define( SUITE_SETUP(Config),
+  {_, _, Milliseconds} = os:timestamp(),
+  random:seed(Milliseconds),
   {ok, _} = application:ensure_all_started( clc_v2 ),
   ok = application:set_env(clc_v2, api_base, "http://localhost:8000/v2"),
   {ok, _} = application:ensure_all_started( mock_clc, temporary ),
@@ -11,13 +13,6 @@
   cowboy:stop_listener(http) ).
 -define( TEST_TEARDOWN(),
   data_server:clear() ).
--define( RANDOMS(),
-  begin
-    Fun = fun() ->
-            {_, _, Milliseconds} = os:timestamp(),
-            random:seed(Milliseconds),
-            Float = trunc(random:uniform() * 1000)/10,
-            {Float, integer_to_binary(trunc(Float))}
-          end,
-    Fun()
-  end).
+-define( RFLOAT(), trunc(random:uniform() * 1000)/10 ).
+-define( RINT(), random:uniform(100) ).
+-define( RBIN(), list_to_binary([random:uniform(26) + 64 || _ <- lists:seq(1,16)]) ).

@@ -26,6 +26,8 @@ route_matchers() ->
           auth_handler, [] },
       { io_lib:format("/v2/alertPolicies/~s/[:id]", [?ALIAS]),
           alertpolicy_handler, [] },
+      { io_lib:format("/v2/antiAffinityPolicies/~s/[:id]", [?ALIAS]),
+          antiaffinitypolicy_handler, [] },
       { io_lib:format("/v2/datacenters/~s/[:id]", [?ALIAS]),
           datacenter_handler, [] },
       { io_lib:format("/v2/datacenters/~s/:id/deploymentCapabilities", [?ALIAS]),
