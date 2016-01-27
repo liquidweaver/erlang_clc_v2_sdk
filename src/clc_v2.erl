@@ -14,7 +14,12 @@
   antiaffinity_policy/2,
   create_antiaffinity_policy/2,
   update_antiaffinity_policy/3,
-  delete_antiaffinity_policy/2
+  delete_antiaffinity_policy/2,
+  autoscale_policies/1,
+  autoscale_policy/2,
+  server_autoscale_policy/2,
+  update_server_autoscale_policy/3,
+  remove_server_autoscale_policy/2
   ] ).
 
 -spec login( Username::binary(), Password::binary() ) -> clc_v2_auth:auth_ref().
@@ -76,3 +81,23 @@ update_antiaffinity_policy(Ref, Spec, Id) ->
 -spec delete_antiaffinity_policy(Ref::clc_v2_auth:auth_ref(), Id::binary()) -> ok.
 delete_antiaffinity_policy(Ref, Id) ->
    clc_v2_antiaffinity_policies:delete(Ref, Id).
+
+-spec autoscale_policies(Ref::clc_v2_auth:auth_ref()) -> map().
+autoscale_policies(Ref) ->
+	clc_v2_autoscale_policies:get(Ref).
+
+-spec autoscale_policy(Ref::clc_v2_auth:auth_ref(), Id::binary()) -> map().
+autoscale_policy(Ref, Id) ->
+	clc_v2_autoscale_policies:get(Ref, Id).
+
+-spec server_autoscale_policy(Ref::clc_v2_auth:auth_ref(), ServerId::binary()) -> map().
+server_autoscale_policy(Ref, ServerId) ->
+	clc_v2_autoscale_policies:get_server_policy(Ref, ServerId).
+
+-spec update_server_autoscale_policy(Ref::clc_v2_auth:auth_ref(), ServerId::binary(), PolicyId::binary()) -> ok.
+update_server_autoscale_policy(Ref, ServerId, PolicyId) ->
+	clc_v2_autoscale_policies:update_server_policy(Ref, ServerId, PolicyId).
+
+-spec remove_server_autoscale_policy(Ref::clc_v2_auth:auth_ref(), ServerId::binary()) -> ok.
+remove_server_autoscale_policy(Ref, ServerId) ->
+	clc_v2_autoscale_policies:remove_server_policy(Ref, ServerId).

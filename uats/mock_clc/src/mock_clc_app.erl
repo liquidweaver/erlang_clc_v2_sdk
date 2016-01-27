@@ -28,11 +28,15 @@ route_matchers() ->
           alertpolicy_handler, [] },
       { io_lib:format("/v2/antiAffinityPolicies/~s/[:id]", [?ALIAS]),
           antiaffinitypolicy_handler, [] },
+      { io_lib:format("/v2/autoscalePolicies/~s/[:id]", [?ALIAS]),
+          autoscalepolicy_handler, [] },
       { io_lib:format("/v2/datacenters/~s/[:id]", [?ALIAS]),
           datacenter_handler, [] },
       { io_lib:format("/v2/datacenters/~s/:id/deploymentCapabilities", [?ALIAS]),
           dc_deployment_capability_handler, [] },
       { io_lib:format("/v2/datacenters/~s/:id/bareMetalCapabilities", [?ALIAS]),
-          dc_baremetal_capability_handler, [] }
+          dc_baremetal_capability_handler, [] },
+      { io_lib:format("/v2/servers/~s/:server_id/cpuAutoscalePolicy", [?ALIAS]),
+          server_autoscalepolicy_handler, [] }
      ]
     } ].
