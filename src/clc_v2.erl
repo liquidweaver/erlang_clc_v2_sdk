@@ -3,7 +3,8 @@
   login/2,
   datacenters/1,
   datacenter/2,
-  datacenter_capabilities/2,
+  datacenter_deployment_capabilities/2,
+  datacenter_baremetal_capabilities/2,
   alert_policies/1,
   alert_policy/2,
   create_alert_policy/2,
@@ -23,9 +24,13 @@ datacenters(Ref) ->
 datacenter(Ref, Datacenter) ->
   clc_v2_datacenters:get(Ref, Datacenter).
 
--spec datacenter_capabilities(Ref::clc_v2_auth:auth_ref(), Datacenter::binary()) -> map().
-datacenter_capabilities(Ref, Datacenter) ->
-  clc_v2_datacenters:capabilities(Ref, Datacenter).
+-spec datacenter_deployment_capabilities(Ref::clc_v2_auth:auth_ref(), Datacenter::binary()) -> map().
+datacenter_deployment_capabilities(Ref, Datacenter) ->
+  clc_v2_datacenters:deployment_capabilities(Ref, Datacenter).
+
+-spec datacenter_baremetal_capabilities(Ref::clc_v2_auth:auth_ref(), Datacenter::binary()) -> map().
+datacenter_baremetal_capabilities(Ref, Datacenter) ->
+  clc_v2_datacenters:baremetal_capabilities(Ref, Datacenter).
 
 -spec alert_policies(Ref::clc_v2_auth:auth_ref()) -> map().
 alert_policies(Ref) ->

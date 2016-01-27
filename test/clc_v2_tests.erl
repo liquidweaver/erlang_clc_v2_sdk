@@ -1,13 +1,21 @@
 -module( clc_v2_tests ).
 -include( "test_fixture.hrl" ).
 
-clc_v2_datacenter_capabilites_delegates_to_datacenters_capabilities() ->
+clc_v2_datacenter_deployment_capabilites_delegates_to_datacenters_deployment_capabilities() ->
   ?meck(clc_v2_datacenters, [non_strict]),
-  ?stub(clc_v2_datacenters, capabilities, 2, datacenter1),
+  ?stub(clc_v2_datacenters, deployment_capabilities, 2, datacenter1),
 
-  ?assertEqual(datacenter1, clc_v2:datacenter_capabilities(auth_ref1, datacenter_id1)),
+  ?assertEqual(datacenter1, clc_v2:datacenter_deployment_capabilities(auth_ref1, datacenter_id1)),
 
-  ?called(clc_v2_datacenters, capabilities, [auth_ref1, datacenter_id1]).
+  ?called(clc_v2_datacenters, deployment_capabilities, [auth_ref1, datacenter_id1]).
+
+clc_v2_datacenter_baremetal_capabilites_delegates_to_datacenters_baremetal_capabilities() ->
+  ?meck(clc_v2_datacenters, [non_strict]),
+  ?stub(clc_v2_datacenters, baremetal_capabilities, 2, datacenter1),
+
+  ?assertEqual(datacenter1, clc_v2:datacenter_baremetal_capabilities(auth_ref1, datacenter_id1)),
+
+  ?called(clc_v2_datacenters, baremetal_capabilities, [auth_ref1, datacenter_id1]).
 
 clc_v2_datacenters_delgates_to_datacenters_get() ->
   ?meck(clc_v2_datacenters, [non_strict]),

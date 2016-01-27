@@ -54,9 +54,10 @@ get_decodes_response_body() ->
   ?assertMatch({ ok, #{ <<"key1">> := <<"value1">> }}, clc_v2_http_client:get( auth_ref1, ["route1"])).
 
 get_returns_error_on_not2xx() ->
-  ?stub( ibrowse, send_req, 4, {ok, "not2xx", [], <<>> }),
+  ?stub( ibrowse, send_req, 4, {ok, "not2xx", [], "error message" }),
 
-  ?assertMatch({ error, "unexpected status code: not2xx" }, clc_v2_http_client:get( auth_ref1, ["route1"])).
+  Expected = { error, <<"unexpected status (not2xx) - error message">> },
+  ?assertMatch(Expected, clc_v2_http_client:get( auth_ref1, ["route1"])).
 
 post_appends_multiple_route_directories_to_api_base_and_posts() ->
   clc_v2_http_client:post(  auth_ref1, ["route1", "route2"], #{ key1 => "value1", key2 => "value2" }),
@@ -107,10 +108,17 @@ post_decodes_response_body() ->
 
   ?assertMatch({ok, #{ <<"key1">> := <<"value1">> }}, clc_v2_http_client:post( auth_ref1, ["route1"], #{})).
 
-post_returns_error_on_not2xx() ->
-  ?stub( ibrowse, send_req, 4, {ok, "not2xx", [], <<>> }),
+post_allows_for_response_of_created() ->
+  ResponseBody = <<"{\"key1\":\"value1\"}">>,
+  ?stub( ibrowse, send_req, 4, {ok, "201", [], ResponseBody }),
 
-  ?assertMatch({ error, "unexpected status code: not2xx" }, clc_v2_http_client:post( auth_ref1, ["route1"], #{})).
+  ?assertMatch({ok, #{ <<"key1">> := <<"value1">> }}, clc_v2_http_client:post( auth_ref1, ["route1"], #{})).
+
+post_returns_error_on_not2xx() ->
+  ?stub( ibrowse, send_req, 4, {ok, "not2xx", [], "error message" }),
+
+  Expected = { error, <<"unexpected status (not2xx) - error message">> },
+  ?assertMatch(Expected, clc_v2_http_client:post( auth_ref1, ["route1"], #{})).
 
 put_appends_multiple_route_directories_to_api_base_and_posts() ->
   clc_v2_http_client:put(  auth_ref1, ["route1", "route2"], #{ key1 => "value1", key2 => "value2" }),
@@ -155,9 +163,10 @@ put_decodes_response_body() ->
   ?assertMatch({ok, #{ <<"key1">> := <<"value1">> }}, clc_v2_http_client:put( auth_ref1, ["route1"], #{})).
 
 put_returns_error_on_not2xx() ->
-  ?stub( ibrowse, send_req, 4, {ok, "not2xx", [], <<>> }),
+  ?stub( ibrowse, send_req, 4, {ok, "not2xx", [], "error message" }),
 
-  ?assertMatch({ error, "unexpected status code: not2xx" }, clc_v2_http_client:put( auth_ref1, ["route1"], #{})).
+  Expected = { error, <<"unexpected status (not2xx) - error message">> },
+  ?assertMatch(Expected, clc_v2_http_client:put( auth_ref1, ["route1"], #{})).
 
 delete_appends_multiple_route_directories_to_api_base_and_posts() ->
   ?stub( ibrowse, send_req, 4, {ok, "204", [], ignored1} ),
@@ -189,6 +198,7 @@ delete_returns_ok_on_success() ->
   ?assertEqual( ok, clc_v2_http_client:delete(auth_ref1, ["route1"]) ).
 
 delete_returns_error_on_not2xx() ->
-  ?stub( ibrowse, send_req, 4, {ok, "not2xx", [], <<>> }),
+  ?stub( ibrowse, send_req, 4, {ok, "not2xx", [], "error message" }),
 
-  ?assertMatch({ error, "unexpected status code: not2xx" }, clc_v2_http_client:delete( auth_ref1, ["route1"])).
+  Expected = { error, <<"unexpected status (not2xx) - error message">> },
+  ?assertMatch(Expected, clc_v2_http_client:delete( auth_ref1, ["route1"])).
