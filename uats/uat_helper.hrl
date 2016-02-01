@@ -16,3 +16,4 @@
 -define( RFLOAT(), trunc(random:uniform() * 1000)/10 ).
 -define( RINT(), random:uniform(100) ).
 -define( RBIN(), list_to_binary([random:uniform(26) + 64 || _ <- lists:seq(1,16)]) ).
+-define( AUTH(Config), proplists:get_value( auth_ref, Config )).

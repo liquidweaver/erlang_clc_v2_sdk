@@ -21,7 +21,7 @@ clc_v2_invoice_data_returns_invoice_data(Config) ->
 	Key = <<(integer_to_binary(InvoiceYear))/binary, (integer_to_binary(InvoiceMonth))/binary>>,
   data_server:put(invoices, Key, Expected),
 
-  { ok, Actual } = clc_v2:invoice_data(proplists:get_value( auth_ref, Config ), InvoiceYear, InvoiceMonth),
+  { ok, Actual } = clc_v2:invoice_data(?AUTH(Config), InvoiceYear, InvoiceMonth),
 
   assert:equal(Expected, Actual),
   ok.

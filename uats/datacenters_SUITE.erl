@@ -26,8 +26,7 @@ clc_v2_datacenters_returns_expected_datacenters(Config) ->
   Expected = [random_datacenter(), random_datacenter()],
   data_server:put(datacenters, Expected),
 
-  AuthRef = proplists:get_value( auth_ref, Config ),
-  { ok, Actual } = clc_v2:datacenters(AuthRef),
+  { ok, Actual } = clc_v2:datacenters(?AUTH(Config)),
 
   assert:equal(Expected, Actual),
   ok.
@@ -36,8 +35,7 @@ clc_v2_datacenter_returns_a_single_datacenter(Config) ->
   Expected = #{<<"id">> := Id} = random_datacenter(),
   data_server:put(datacenters, Id, Expected),
 
-  AuthRef = proplists:get_value( auth_ref, Config ),
-  { ok, Actual } = clc_v2:datacenter(AuthRef, Id),
+  { ok, Actual } = clc_v2:datacenter(?AUTH(Config), Id),
 
   assert:equal(Expected, Actual),
   ok.
@@ -47,8 +45,7 @@ clc_v2_datacenter_deployment_capabilities_returns_capabilites_for_a_datacenter(C
   Expected = deployment_capabilities(),
   data_server:put(datacenter_deployment_capabilities, Datacenter, Expected),
 
-  AuthRef = proplists:get_value( auth_ref, Config ),
-  { ok, Actual } = clc_v2:datacenter_deployment_capabilities(AuthRef, Datacenter),
+  { ok, Actual } = clc_v2:datacenter_deployment_capabilities(?AUTH(Config), Datacenter),
 
   assert:equal(Expected, Actual),
   ok.
@@ -58,8 +55,7 @@ clc_v2_datacenter_baremetal_capabilities_returns_capabilites_for_a_datacenter(Co
   Expected = baremetal_capabilities(),
   data_server:put(datacenter_baremetal_capabilities, Datacenter, Expected),
 
-  AuthRef = proplists:get_value( auth_ref, Config ),
-  { ok, Actual } = clc_v2:datacenter_baremetal_capabilities(AuthRef, Datacenter),
+  { ok, Actual } = clc_v2:datacenter_baremetal_capabilities(?AUTH(Config), Datacenter),
 
   assert:equal(Expected, Actual),
   ok.
