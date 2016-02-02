@@ -36,6 +36,8 @@ route_matchers() ->
           dc_deployment_capability_handler, [] },
       { io_lib:format("/v2/datacenters/~s/:id/bareMetalCapabilities", [?ALIAS]),
           dc_baremetal_capability_handler, [] },
+      { io_lib:format("/v2/invoice/~s/:year/:month", [?ALIAS]),
+          invoice_handler, [] },
       { io_lib:format("/v2/servers/~s/:server_id/cpuAutoscalePolicy", [?ALIAS]),
           server_autoscalepolicy_handler, [] }
      ]
