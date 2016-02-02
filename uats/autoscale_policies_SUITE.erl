@@ -28,7 +28,7 @@ clc_v2_autoscale_returns_expected_policies(Config) ->
   Expected = random_policies(),
   data_server:put(autoscale_policies, Expected),
 
-  { ok, Actual } = clc_v2:autoscale_policies(proplists:get_value( auth_ref, Config )),
+  { ok, Actual } = clc_v2:autoscale_policies(?AUTH(Config)),
 
   assert:equal(Expected, Actual),
   ok.
@@ -37,8 +37,7 @@ clc_v2_autoscale_returns_a_single_policy(Config) ->
   Expected = #{<<"id">> := Id} = random_policy(),
   data_server:put(autoscale_policies, Id, Expected),
 
-  AuthRef = proplists:get_value( auth_ref, Config ),
-  { ok, Actual } = clc_v2:autoscale_policy(AuthRef, Id),
+  { ok, Actual } = clc_v2:autoscale_policy(?AUTH(Config), Id),
 
   assert:equal(Expected, Actual),
   ok.
@@ -48,8 +47,7 @@ clc_v2_server_autoscale_returns_server_policy(Config) ->
   Expected = server_policy(),
   data_server:put(server_autoscale_policies, ServerId, Expected),
 
-  AuthRef = proplists:get_value( auth_ref, Config ),
-  { ok, Actual } = clc_v2:server_autoscale_policy(AuthRef, ServerId),
+  { ok, Actual } = clc_v2:server_autoscale_policy(?AUTH(Config), ServerId),
 
   assert:equal(Expected, Actual),
   ok.
@@ -58,8 +56,7 @@ clc_v2_server_autoscale_updates_expected_policy(Config) ->
 	ServerId = ?RBIN(),
 	Expected = #{ <<"id">> := PolicyId } = #{ <<"id">> => ?RBIN() },
 
-  AuthRef = proplists:get_value( auth_ref, Config ),
-  ok = clc_v2:update_server_autoscale_policy(AuthRef, ServerId, PolicyId),
+  ok = clc_v2:update_server_autoscale_policy(?AUTH(Config), ServerId, PolicyId),
 
 	assert:equal(Expected, data_server:get(server_autoscale_policies, ServerId)),
   ok.
@@ -68,8 +65,7 @@ clc_v2_server_autoscale_removes_expected_policy(Config) ->
 	ServerId = ?RBIN(),
 	PolicyId = ?RBIN(),
 
-  AuthRef = proplists:get_value( auth_ref, Config ),
-  ok = clc_v2:remove_server_autoscale_policy(AuthRef, ServerId),
+  ok = clc_v2:remove_server_autoscale_policy(?AUTH(Config), ServerId),
 
 	assert:equal(deleted, data_server:get(server_autoscale_policies, ServerId)),
   ok.

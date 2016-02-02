@@ -28,7 +28,7 @@ clc_v2_antiaffinity_returns_expected_policies(Config) ->
   Expected = random_policies(),
   data_server:put(antiaffinity_policies, Expected),
 
-  { ok, Actual } = clc_v2:antiaffinity_policies(proplists:get_value( auth_ref, Config )),
+  { ok, Actual } = clc_v2:antiaffinity_policies(?AUTH(Config)),
 
   assert:equal(Expected, Actual),
   ok.
@@ -37,8 +37,7 @@ clc_v2_antiaffinity_returns_a_single_policy(Config) ->
   Expected = #{<<"id">> := Id} = random_policy(),
   data_server:put(antiaffinity_policies, Id, Expected),
 
-  AuthRef = proplists:get_value( auth_ref, Config ),
-  { ok, Actual } = clc_v2:antiaffinity_policy(AuthRef, Id),
+  { ok, Actual } = clc_v2:antiaffinity_policy(?AUTH(Config), Id),
 
   assert:equal(Expected, Actual),
   ok.
@@ -47,8 +46,7 @@ clc_v2_antiaffinity_creates_expected_policy(Config) ->
   Spec = #{ name => <<"p1">>, location => <<"l1">> },
   Expected = #{ <<"name">> => <<"p1">>, <<"location">> => <<"l1">> },
 
-  AuthRef = proplists:get_value( auth_ref, Config ),
-  { ok, Id } = clc_v2:create_antiaffinity_policy(AuthRef, Spec),
+  { ok, Id } = clc_v2:create_antiaffinity_policy(?AUTH(Config), Spec),
 
   assert:equal(Expected, data_server:get(antiaffinity_policies, Id)),
   ok.
@@ -58,8 +56,7 @@ clc_v2_antiaffinity_updates_expected_policy(Config) ->
   Expected = #{ <<"name">> => <<"new name">> },
 
   Id = <<"123">>,
-  AuthRef = proplists:get_value( auth_ref, Config ),
-  ok = clc_v2:update_antiaffinity_policy(AuthRef, Spec, Id),
+  ok = clc_v2:update_antiaffinity_policy(?AUTH(Config), Spec, Id),
 
   assert:equal(Expected, data_server:get(antiaffinity_policies, Id)),
   ok.
@@ -68,8 +65,7 @@ clc_v2_antiaffinity_updates_expected_policy(Config) ->
 clc_v2_antiaffinity_deletes_expected_policy(Config) ->
   Id = <<"123">>,
 
-  AuthRef = proplists:get_value( auth_ref, Config ),
-  ok = clc_v2:delete_antiaffinity_policy(AuthRef, Id),
+  ok = clc_v2:delete_antiaffinity_policy(?AUTH(Config), Id),
 
   assert:equal(deleted, data_server:get(antiaffinity_policies, Id)),
   ok.

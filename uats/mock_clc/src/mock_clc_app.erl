@@ -22,6 +22,8 @@ route_matchers() ->
 
   [ {'_',
      [
+      { io_lib:format("/v2/accounts/~s/customFields", [?ALIAS]),
+          custom_fields_handler, [] },
       { "/v2/authentication/login",
           auth_handler, [] },
       { io_lib:format("/v2/alertPolicies/~s/[:id]", [?ALIAS]),
@@ -36,6 +38,8 @@ route_matchers() ->
           dc_deployment_capability_handler, [] },
       { io_lib:format("/v2/datacenters/~s/:id/bareMetalCapabilities", [?ALIAS]),
           dc_baremetal_capability_handler, [] },
+      { io_lib:format("/v2/invoice/~s/:year/:month", [?ALIAS]),
+          invoice_handler, [] },
       { io_lib:format("/v2/servers/~s/:server_id/cpuAutoscalePolicy", [?ALIAS]),
           server_autoscalepolicy_handler, [] }
      ]

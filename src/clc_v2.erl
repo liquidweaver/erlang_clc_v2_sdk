@@ -1,6 +1,8 @@
 -module( clc_v2 ).
 -export( [
+	custom_fields/1,
   login/2,
+  invoice_data/3,
   datacenters/1,
   datacenter/2,
   datacenter_deployment_capabilities/2,
@@ -22,9 +24,17 @@
   remove_server_autoscale_policy/2
   ] ).
 
+-spec custom_fields(Ref::clc_v2_auth:auth_ref()) -> list().
+custom_fields(Ref) ->
+  clc_v2_custom_fields:get(Ref).
+
 -spec login( Username::binary(), Password::binary() ) -> clc_v2_auth:auth_ref().
 login( Username, Password ) ->
   clc_v2_auth_sup:create_worker( Username, Password ).
+
+-spec invoice_data(Ref::clc_v2_auth:auth_ref(), Year::integer(), Month::integer()) -> map().
+invoice_data(Ref, Year, Month) ->
+  clc_v2_invoice:get(Ref, Year, Month).
 
 -spec datacenters(Ref::clc_v2_auth:auth_ref()) -> map().
 datacenters(Ref) ->
