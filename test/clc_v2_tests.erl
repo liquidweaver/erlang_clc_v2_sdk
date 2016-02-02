@@ -1,6 +1,13 @@
 -module( clc_v2_tests ).
 -include( "test_fixture.hrl" ).
 
+clc_v2_custom_fields_delegates_to_custom_fields_get() ->
+  ?meck(clc_v2_custom_fields, []),
+  ?stub(clc_v2_custom_fields, get, 1, fields1),
+
+  ?assertEqual(fields1, clc_v2:custom_fields(auth_ref1)),
+  ?called(clc_v2_custom_fields, get, [auth_ref1]).
+
 clc_v2_invoice_data_delegates_to_invoice_get() ->
   ?meck(clc_v2_invoice, []),
   ?stub(clc_v2_invoice, get, 3, invoice1),

@@ -1,5 +1,6 @@
 -module( clc_v2 ).
 -export( [
+	custom_fields/1,
   login/2,
   invoice_data/3,
   datacenters/1,
@@ -22,6 +23,10 @@
   update_server_autoscale_policy/3,
   remove_server_autoscale_policy/2
   ] ).
+
+-spec custom_fields(Ref::clc_v2_auth:auth_ref()) -> list().
+custom_fields(Ref) ->
+  clc_v2_custom_fields:get(Ref).
 
 -spec login( Username::binary(), Password::binary() ) -> clc_v2_auth:auth_ref().
 login( Username, Password ) ->
