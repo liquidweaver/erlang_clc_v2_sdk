@@ -22,6 +22,8 @@ route_matchers() ->
 
   [ {'_',
      [
+      { io_lib:format("/v2/accounts/~s/customFields", [?ALIAS]),
+          custom_fields_handler, [] },
       { "/v2/authentication/login",
           auth_handler, [] },
       { io_lib:format("/v2/alertPolicies/~s/[:id]", [?ALIAS]),
