@@ -41,5 +41,5 @@ unsupported(Req, State) ->
 read(Req, State) ->
   Year = element(1, cowboy_req:binding(year, Req)),
   Month = element(1, cowboy_req:binding(month, Req)),
-  Response = data_server:get(invoices, <<Year, Month>>),
+  Response = data_server:get(invoices, <<Year/binary, Month/binary>>),
   {jiffy:encode(Response), Req, State}.
